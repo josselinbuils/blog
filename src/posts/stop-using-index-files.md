@@ -93,7 +93,15 @@ Here is a probably incomplete list:
   This can be especially annoying if you work in multidisciplinary teams and
   back-end developers have to read front-end code now and then.
 
-- **It can lead to compilation errors.**
+- **They lead to circular dependencies.**
+
+  Usually, the more you have exports in a unique file, the more this file will
+  be imported by others, and the more likely you are to create circular
+  dependencies.
+
+  I had the opportunity to validate this in personal projects.
+
+- **They can lead to compilation errors.**
 
   This one is a bit specific but if you are working on JavaScript code that can
   be rendered in both server and client side (i.e. a Next.js application), you
