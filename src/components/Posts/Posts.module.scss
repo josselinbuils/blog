@@ -1,0 +1,15 @@
+@import '../../utils';
+
+.posts {
+  box-sizing: border-box;
+  width: min(#{rem(830px)}, 100%);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: rem(10px);
+}
+
+@media (min-width: 600px) {
+  .posts {
+    padding: rem(40px);
+  }
+}
