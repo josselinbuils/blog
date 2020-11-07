@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM nginx:1.19
 
 COPY . blog
 
@@ -7,14 +7,17 @@ WORKDIR blog
 ARG HTTP_PREFIX
 ENV HTTP_PREFIX $HTTP_PREFIX
 
-RUN yarn install --emoji --frozen-lockfile --no-progress && \
-    NODE_ENV=production yarn build
+RUN apt-get update && \
+    apt-get -y install curl gnupg && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get -y install nodejs && \
+    apt-get install -y git && \
+    npm install -g yarn && \
+    yarn install --emoji --frozen-lockfile --no-progress && \
+    yarn build && \
+    yarn install --emoji --frozen-lockfile --no-progress --production
 
-FROM nginx:1.19
-
-COPY --from=builder /blog/dist /usr/share/nginx/html
+COPY dist /usr/share/nginx/html
 COPY nginx/templates/default.conf.template /etc/nginx/templates/default.conf.template
-
-EXPOSE 3000
 
 CMD ["nginx", "-g", "daemon off;"]
