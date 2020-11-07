@@ -3,12 +3,12 @@ server {
 
   location ~* ^${HTTP_PREFIX}(/assets/.*)$ {
     add_header Cache-Control "public, max-age=31536000, immutable";
-    root /usr/share/nginx/html;
+    root /blog/dist;
     try_files $1 =404;
   }
 
   location ~ ^${HTTP_PREFIX}(.*) {
-    root /usr/share/nginx/html;
+    root /blog/dist;
     try_files $1.html $1/index.html =404;
   }
 
