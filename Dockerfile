@@ -15,9 +15,9 @@ RUN apt-get update && \
 
 RUN yarn install --emoji --frozen-lockfile --no-progress && \
     yarn build && \
-    yarn install --emoji --frozen-lockfile --no-progress --production
+    yarn install --emoji --frozen-lockfile --no-progress --production && \
+    cp -r dist/* /usr/share/nginx/html
 
-COPY dist /usr/share/nginx/html
 COPY nginx/templates/default.conf.template /etc/nginx/templates/default.conf.template
 
 CMD ["nginx", "-g", "daemon off;"]
