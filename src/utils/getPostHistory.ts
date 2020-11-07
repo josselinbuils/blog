@@ -20,7 +20,9 @@ export function getPostHistory(
       .toString()
       .trim()
       .split('\n')
-      .filter((line) => line && !line.includes(filename.split('/')[1]))
+      .filter(
+        (line) => line && !line.includes(path.relative(process.cwd(), filename))
+      )
       .map((line) => {
         const result = line.split(' ');
         return {
@@ -30,7 +32,7 @@ export function getPostHistory(
         };
       });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return [];
   }
 }
