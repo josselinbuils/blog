@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BlogPost } from '../BlogPost';
 import { Head } from '../components/Head/Head';
-import { Page } from '../components/Page';
+import { Page } from '../components/Page/Page';
 import { Posts } from '../components/Posts/Posts';
 
 export const IndexPage: FC<Props> = ({ posts }) => (

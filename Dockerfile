@@ -1,7 +1,6 @@
 FROM nginx:1.19
 
 COPY . blog
-
 WORKDIR blog
 
 ARG HTTP_PREFIX
@@ -12,8 +11,9 @@ RUN apt-get update && \
     curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get -y install nodejs && \
     apt-get install -y git && \
-    npm install -g yarn && \
-    yarn install --emoji --frozen-lockfile --no-progress && \
+    npm install -g yarn
+
+RUN yarn install --emoji --frozen-lockfile --no-progress && \
     yarn build && \
     yarn install --emoji --frozen-lockfile --no-progress --production
 
