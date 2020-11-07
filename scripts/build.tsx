@@ -14,8 +14,6 @@ import { getBlogPosts } from '../src/utils/getBlogPosts';
 const DIST_DIR = 'dist';
 const PUBLIC_DIR = 'public';
 
-// TODO add hashes to files and add cache
-
 (async () => {
   const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
   const publicAbsolutePath = path.join(process.cwd(), PUBLIC_DIR);
