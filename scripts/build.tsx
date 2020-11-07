@@ -45,7 +45,6 @@ const PUBLIC_DIR = 'public';
         `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(content)}`
       ),
       {
-        collapseInlineTagWhitespace: true,
         collapseWhitespace: true,
         minifyCSS: true,
       }

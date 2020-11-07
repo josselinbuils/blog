@@ -98,7 +98,7 @@ $fontSize: rem(20px);
     font-size: 1em;
     overflow-x: auto;
     padding: 0.8em;
-    border-radius: em(4px, $fontSize);
+    margin: 0 rem(-10px);
 
     code {
       padding: 0;
@@ -111,5 +111,12 @@ $fontSize: rem(20px);
 
   ul {
     padding-left: 1.5em;
+  }
+}
+
+@media (min-width: 600px) {
+  .markdown pre {
+    border-radius: em(4px, $fontSize);
+    margin: 0;
   }
 }

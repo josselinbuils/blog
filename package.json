@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ts-node ./scripts/build.tsx",
-    "build:watch": "nodemon --watch 'src/**/*' -e json,md,ts,tsx --exec 'yarn build'",
+    "build:watch": "nodemon --watch 'src/**/*' -e json,md,scss,ts,tsx --exec 'yarn build'",
     "dev": "concurrently -n build,server -c yellow,blue 'yarn build:watch' 'node ./scripts/startDevServer.js'"
   },
   "devDependencies": {
