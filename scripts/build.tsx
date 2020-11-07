@@ -1,3 +1,5 @@
+import { generateHashedAssets } from './utils/generateHashedAssets';
+
 require('./utils/registerSCSSLoader');
 
 import fs from 'fs-extra';
@@ -8,13 +10,22 @@ import { IndexPage } from '../src/pages/IndexPage';
 import { PostPage } from '../src/pages/PostPage';
 import { getBlogPosts } from '../src/utils/getBlogPosts';
 
+const DIST_DIR = 'dist';
+const PUBLIC_DIR = 'public';
+
 // TODO add hashes to files and add cache
 
 (async () => {
-  const distFolder = path.join(process.cwd(), 'dist');
+  const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
+  const publicAbsolutePath = path.join(process.cwd(), PUBLIC_DIR);
   const posts = await getBlogPosts();
 
-  await fs.emptyDirSync(distFolder);
+  await fs.emptyDirSync(distAbsolutePath);
+
+  const assets = await generateHashedAssets(
+    publicAbsolutePath,
+    distAbsolutePath
+  );
 
   const pages = [
     {
@@ -27,15 +38,23 @@ import { getBlogPosts } from '../src/utils/getBlogPosts';
     })),
   ];
 
-  const writePromises = pages.map(({ name, content }) =>
-    fs.outputFile(
-      path.join(distFolder, `${name}.html`),
-      ReactDOMServer.renderToStaticMarkup(content),
-      'utf8'
-    )
-  );
+  function renderFile(content: JSX.Element): string {
+    return assets.reduce(
+      (markup, { newRelativeURL, relativeURL }) =>
+        markup.replace(new RegExp(relativeURL, 'g'), newRelativeURL),
+      `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(content)}`
+    );
+  }
 
-  await Promise.all([writePromises]);
+  await Promise.all([
+    pages.map(({ name, content }) =>
+      fs.outputFile(
+        path.join(distAbsolutePath, `${name}.html`),
+        renderFile(content),
+        'utf8'
+      )
+    ),
+  ]);
 })();
 
 process.on('unhandledRejection', (error) => {

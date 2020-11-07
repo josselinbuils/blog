@@ -20,8 +20,8 @@ ${post.content}
 
 ${post.history
   .map(({ commitHash, commitSubject, commitTimestamp }) => {
-    const date = dayjs(commitTimestamp).fromNow();
-    return `- [${commitSubject}](https://github.com/josselinbuils/portfolio/commit/${commitHash}) committed ${date}.`;
+    const date = dayjs(commitTimestamp).format('MMM D, YYYY');
+    return `- [${commitSubject}](https://github.com/josselinbuils/portfolio/commit/${commitHash}) committed on ${date}.`;
   })
   .join('\n')}
 `}</Markdown>

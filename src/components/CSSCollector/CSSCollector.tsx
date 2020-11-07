@@ -5,10 +5,12 @@ export const CSSCollectorContext = createContext({
 });
 
 export class CSSCollector {
-  css = '';
+  css = [] as string[];
 
   add = (css: string) => {
-    this.css += css;
+    if (!this.css.includes(css)) {
+      this.css.push(css);
+    }
   };
 
   collect(children: ReactNode) {
@@ -22,6 +24,6 @@ export class CSSCollector {
   }
 
   retrieve(): string {
-    return this.css;
+    return this.css.join('');
   }
 }

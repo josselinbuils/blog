@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ImgHTMLAttributes, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getURL } from '../../utils/getURL';
@@ -7,13 +7,16 @@ import { withCSS } from '../CSSCollector/withCSS';
 import { Highlight } from './Hightlight/Hightlight';
 
 import styles, { css } from './Markdown.module.scss';
+import { Head } from '../Head/Head';
 
 const renderers = {
   code: ({ language, value }: { language: string; value: string }) => (
     <Highlight code={value} language={language} />
   ),
   image: ({ alt, src }: { alt: string; src: string }) => {
-    let props = { alt };
+    let props = { alt } as ImgHTMLAttributes<HTMLImageElement>;
+
+    src = getURL(src);
 
     try {
       props = JSON.parse(alt);
@@ -22,7 +25,16 @@ const renderers = {
     }
     // TODO manage srcSet and base url
 
-    return <img src={getURL(src)} {...props} />;
+    return (
+      <>
+        {props.loading !== 'lazy' && (
+          <Head>
+            <link rel="preload" href={src} as="image" />
+          </Head>
+        )}
+        <img src={src} {...props} />
+      </>
+    );
   },
   link: ({ children, href }: { children: ReactNode; href: string }) =>
     href.startsWith('/') ? (

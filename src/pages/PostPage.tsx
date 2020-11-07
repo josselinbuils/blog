@@ -9,13 +9,6 @@ export const PostPage: FC<Props> = ({ post }) => (
     <Head>
       <title>{post.title}</title>
       <meta name="description" content={post.description} />
-      <link
-        rel="preload"
-        href="/JetBrainsMono-Regular.woff2"
-        as="font"
-        type="font/woff2"
-        crossOrigin="anonymous"
-      />
     </Head>
     <Post post={post} />
   </Page>

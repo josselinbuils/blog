@@ -37,7 +37,6 @@ $fontSize: rem(20px);
   }
 
   code {
-    font-size: 0.8em;
     padding: em(2px, $fontSize) em(6px, $fontSize);
     border-radius: em(4px, $fontSize);
     background: #eee;
@@ -46,9 +45,13 @@ $fontSize: rem(20px);
   code,
   kbd,
   pre {
-    font-family: 'JetBrainsMono', monospace;
-    font-size: 0.75em;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
     line-height: 1.5;
+  }
+
+  code,
+  kbd {
+    font-size: 0.8em;
   }
 
   h1 {
