@@ -4,6 +4,12 @@ COPY . blog
 
 WORKDIR blog
 
+ARG HTTP_PREFIX
+ENV HTTP_PREFIX $HTTP_PREFIX
+
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+
 RUN yarn install --emoji --frozen-lockfile --no-progress && \
     yarn build
 
