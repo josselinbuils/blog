@@ -1,5 +1,6 @@
 require('./utils/registerSCSSLoader');
-import { promises as fs } from 'fs';
+
+import fs from 'fs-extra';
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -7,14 +8,13 @@ import { IndexPage } from '../src/pages/IndexPage';
 import { PostPage } from '../src/pages/PostPage';
 import { getBlogPosts } from '../src/utils/getBlogPosts';
 
+// TODO add hashes to files and add cache
+
 (async () => {
   const distFolder = path.join(process.cwd(), 'dist');
   const posts = await getBlogPosts();
 
-  try {
-    await fs.rmdir(distFolder, { recursive: true });
-  } catch {}
-  await fs.mkdir(distFolder);
+  await fs.emptyDirSync(distFolder);
 
   const pages = [
     {
@@ -28,7 +28,7 @@ import { getBlogPosts } from '../src/utils/getBlogPosts';
   ];
 
   const writePromises = pages.map(({ name, content }) =>
-    fs.writeFile(
+    fs.outputFile(
       path.join(distFolder, `${name}.html`),
       ReactDOMServer.renderToStaticMarkup(content),
       'utf8'

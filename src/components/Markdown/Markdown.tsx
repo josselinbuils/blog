@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React, { FC, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { getURL } from '../../utils/getURL';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Highlight } from './Hightlight/Hightlight';
 
@@ -19,12 +20,13 @@ const renderers = {
     } catch (e) {
       // Ignored
     }
+    // TODO manage srcSet and base url
 
-    return <img src={src} {...props} />;
+    return <img src={getURL(src)} {...props} />;
   },
   link: ({ children, href }: { children: ReactNode; href: string }) =>
     href.startsWith('/') ? (
-      <a href={href}>{children}</a>
+      <a href={getURL(href)}>{children}</a>
     ) : (
       <a href={href} rel="noreferrer" target="_blank">
         {children}

@@ -1,0 +1,8 @@
+server {
+  listen 3000;
+
+    location ~ ^${HTTP_PREFIX}(.*) {
+        root   /usr/share/nginx/html;
+        try_files $1 $1.html $1/index.html =404;
+    }
+}

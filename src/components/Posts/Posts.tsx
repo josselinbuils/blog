@@ -14,13 +14,13 @@ Hey, I'm Josselin, a full-stack JavaScript developer 😄
 
 Here are some posts where I give my opinion on code stuff 👨‍💻
 
-[![{ "alt": "LinkedIn", "height": 40, "width": 40 }](/blog/linkedin.svg)](https://www.linkedin.com/in/josselinbuils)
-[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/blog/twitter.svg)](https://twitter.com/josselinbuils)
-[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/blog/github.svg)](https://github.com/josselinbuils)
+[![{ "alt": "LinkedIn", "height": 40, "width": 40 }](/linkedin.svg)](https://www.linkedin.com/in/josselinbuils)
+[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/twitter.svg)](https://twitter.com/josselinbuils)
+[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/github.svg)](https://github.com/josselinbuils)
 
 ## Posts
 
-${posts.map(({ slug, title }) => `- [${title}](/blog/${slug})`).join('\\n')}
+${posts.map(({ slug, title }) => `- [${title}](/${slug})`).join('\\n')}
 `}</Markdown>
   ),
   css
