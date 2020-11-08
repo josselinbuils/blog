@@ -6,6 +6,29 @@
   max-width: 100%;
   margin: 0 auto;
   padding: rem(10px);
+
+  & > p > a {
+    position: relative;
+    margin-left: 30px;
+
+    &::before {
+      $size: 1.25em;
+
+      content: '<';
+      position: absolute;
+      left: -$size * 1.5;
+      top: $size * 0.1;
+      background: var(--link-color);
+      width: $size;
+      height: $size;
+      color: var(--background-color);
+      line-height: $size * 0.99;
+      font-size: 0.8em;
+      border-radius: $size;
+      text-align: center;
+      font-weight: 500;
+    }
+  }
 }
 
 @include desktop {
