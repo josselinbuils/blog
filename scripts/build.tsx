@@ -10,6 +10,7 @@ import ReactDOMServer from 'react-dom/server';
 import { IndexPage } from '../src/pages/IndexPage';
 import { PostPage } from '../src/pages/PostPage';
 import { getBlogPosts } from '../src/utils/getBlogPosts';
+import { HotReload } from './utils/HotReload';
 
 const DIST_DIR = 'dist';
 const PUBLIC_DIR = 'public';
@@ -42,7 +43,12 @@ const PUBLIC_DIR = 'public';
       assets.reduce(
         (markup, { newRelativeURL, relativeURL }) =>
           markup.replace(new RegExp(relativeURL, 'g'), newRelativeURL),
-        `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(content)}`
+        `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(
+          <>
+            {process.env.NODE_ENV === 'development' && <HotReload />}
+            {content}
+          </>
+        )}`
       ),
       {
         collapseWhitespace: true,
