@@ -22,7 +22,7 @@ ${posts
   .map(
     ({ history, readingTime, slug, title }) => `\
 ## [${title}](/${slug})
-  ${history.pop()?.commitDate} - ${readingTime}
+  ${[...history].pop()?.commitDate} - ${readingTime}
 `
   )
   .join('')}
