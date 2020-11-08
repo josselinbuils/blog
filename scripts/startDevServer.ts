@@ -32,6 +32,8 @@ const wsServer = new ws.Server({ port: WS_PORT });
 let buildProcess: ChildProcess | undefined;
 
 const build = debounce(function build() {
+  const startTime = Date.now();
+
   console.log('Build...');
 
   if (buildProcess) {
@@ -49,7 +51,10 @@ const build = debounce(function build() {
       buildProcess = undefined;
 
       if (!error) {
-        console.log(chalk.green('Build success'));
+        console.log(
+          chalk.green('Build success'),
+          `${Math.round(Date.now() - startTime) / 1000}s`
+        );
 
         [...wsServer.clients]
           .filter((client) => client.readyState === client.OPEN)
