@@ -7,7 +7,7 @@ import { Posts } from '../components/Posts/Posts';
 export const IndexPage: FC<Props> = ({ posts }) => (
   <Page>
     <Head>
-      <title>Opinionated</title>
+      <title>Blog</title>
       <meta
         name="description"
         content="Hey, I'm Josselin, a full-stack JavaScript developer 😄 Here are some posts where I give my opinion on code stuff 👨‍💻"
