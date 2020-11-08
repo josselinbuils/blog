@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "repository": "https://github.com/josselinbuils/blog.git",
+  "repository": "https://github.com/josselinbuils/blog",
   "author": "Josselin Buils",
   "license": "MIT",
   "scripts": {

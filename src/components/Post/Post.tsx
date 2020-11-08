@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { FC } from 'react';
+import { repository } from '../../../package.json';
 import { BlogPost } from '../../BlogPost';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
@@ -21,7 +22,7 @@ ${post.content}
 ${post.history
   .map(({ commitHash, commitSubject, commitTimestamp }) => {
     const date = dayjs(commitTimestamp).format('MMM D, YYYY');
-    return `- [${commitSubject}](https://github.com/josselinbuils/portfolio/commit/${commitHash}) committed on ${date}.`;
+    return `- [${commitSubject}](${repository}/commit/${commitHash}) committed on ${date}.`;
   })
   .join('\n')}
 `}</Markdown>
