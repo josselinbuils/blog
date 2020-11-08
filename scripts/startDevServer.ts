@@ -39,6 +39,7 @@ function sendToClients(message: string): void {
 
 const build = debounce(function build() {
   const startTime = Date.now();
+  let error = '';
 
   console.log('Build...');
   sendToClients('build...');
@@ -47,28 +48,35 @@ const build = debounce(function build() {
     buildProcess.kill();
   }
 
-  const localBuildProcess = childProcess.exec(
-    'yarn build',
-    { cwd: process.cwd() },
-    (error) => {
-      if (buildProcess !== localBuildProcess) {
-        return; // This one has been killed
-      }
+  const localBuildProcess = childProcess.spawn('yarn', ['build'], {
+    cwd: process.cwd(),
+    stdio: ['inherit', 'inherit', 'pipe'],
+  });
 
-      buildProcess = undefined;
-
-      if (!error) {
-        console.log(
-          chalk.green('Build success'),
-          `${Math.round(Date.now() - startTime) / 1000}s`
-        );
-        sendToClients('reload');
-      } else {
-        console.error(chalk.red('Build error:', error));
-        sendToClients(`build error:\n\n${error}`);
-      }
+  localBuildProcess.on('close', (code: number) => {
+    if (buildProcess !== localBuildProcess) {
+      return; // This one has been killed
     }
-  );
+
+    buildProcess = undefined;
+
+    if (code === 0) {
+      console.log(
+        chalk.green('Build success'),
+        `${Math.round(Date.now() - startTime) / 1000}s`
+      );
+      sendToClients('reload');
+    } else {
+      console.error(chalk.red('Build error'));
+      sendToClients(`build error:\n\n${error}`);
+    }
+  });
+
+  localBuildProcess.stderr?.on('data', (data: string) => {
+    error += data.toString();
+    console.error(data.toString());
+  });
+
   buildProcess = localBuildProcess;
 }, BUILD_DEBOUNCE_DELAY_MS);
 
