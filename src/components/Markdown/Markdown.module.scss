@@ -10,7 +10,6 @@ $fontSize: rem(20px);
   font-size: $fontSize;
   line-height: 1.5;
   word-wrap: break-word;
-  color: #24292e;
 
   > :first-child {
     margin-top: 0 !important;
@@ -24,7 +23,7 @@ $fontSize: rem(20px);
 
   a {
     text-decoration: none;
-    color: #0366d6;
+    color: var(--link-color);
 
     &:hover {
       text-decoration: underline;
@@ -39,7 +38,7 @@ $fontSize: rem(20px);
   code {
     padding: em(2px, $fontSize) em(6px, $fontSize);
     border-radius: em(4px, $fontSize);
-    background: #eee;
+    background: var(--code-background-color);
   }
 
   code,

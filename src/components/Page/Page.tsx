@@ -3,14 +3,21 @@ import ReactDOMServer from 'react-dom/server';
 import { CSSCollector } from '../CSSCollector/CSSCollector';
 import { HeadCollector } from '../Head/HeadCollector';
 
-import { css } from './Page.module.scss';
+import styles, { css } from './Page.module.scss';
 
 export const Page: FC = ({ children }) => {
   const headCollector = new HeadCollector();
   const cssCollector = new CSSCollector();
   cssCollector.add(css);
   const body = ReactDOMServer.renderToStaticMarkup(
-    headCollector.collect(cssCollector.collect(children))
+    headCollector.collect(
+      cssCollector.collect(
+        <>
+          <input className={styles.lighting} role="switch" type="checkbox" />
+          <main className={styles.main}>{children}</main>
+        </>
+      )
+    )
   );
   const style = cssCollector.retrieve();
   const head = headCollector.retrieve();

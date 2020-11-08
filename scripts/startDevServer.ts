@@ -65,6 +65,7 @@ const build = debounce(function build() {
         sendToClients('reload');
       } else {
         console.error(chalk.red('Build error:', error));
+        sendToClients(`build error:\n\n${error}`);
       }
     }
   );

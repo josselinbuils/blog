@@ -12,7 +12,7 @@ dayjs.extend(relativeTime);
 export const Post: FC<Props> = withCSS(
   ({ post }) => (
     <Markdown className={styles.post} tag="article">{`\
-[🔙](/)
+[◀️ Posts](/)
 
 ${post.content}
 

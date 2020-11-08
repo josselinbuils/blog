@@ -4,10 +4,10 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getURL } from '../../utils/getURL';
 import { withCSS } from '../CSSCollector/withCSS';
+import { Head } from '../Head/Head';
 import { Highlight } from './Hightlight/Hightlight';
 
 import styles, { css } from './Markdown.module.scss';
-import { Head } from '../Head/Head';
 
 const renderers = {
   code: ({ language, value }: { language: string; value: string }) => (
