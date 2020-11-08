@@ -48,6 +48,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-markdown": "^5.0.2",
+    "reading-time": "^1.2.0",
     "remark-gfm": "^1.0.0",
     "sass": "^1.29.0",
     "ts-loader": "^8.0.9",

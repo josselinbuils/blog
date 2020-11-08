@@ -2,10 +2,11 @@ export interface BlogPost {
   content: string;
   description: string;
   history: {
+    commitDate: string;
     commitHash: string;
     commitSubject: string;
-    commitTimestamp: number;
   }[];
+  readingTime: string;
   slug: string;
   title: string;
 }

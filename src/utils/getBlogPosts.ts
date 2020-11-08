@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import getReadingTime from 'reading-time';
 import { BlogPost } from '../BlogPost';
 import { getPostHistory } from './getPostHistory';
 import { getPostDescription } from './getPostDescription';
@@ -15,10 +16,11 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       const content = await fs.readFile(path.join(postsDir, filename), 'utf8');
       const description = getPostDescription(content);
       const history = getPostHistory(filename);
+      const readingTime = getReadingTime(content).text;
       const slug = getPostSlug(filename);
       const title = getPostTitle(content);
 
-      return { content, description, history, slug, title };
+      return { content, description, history, readingTime, slug, title };
     })
   );
 }

@@ -18,9 +18,14 @@ Here are some posts where I give my opinion on code stuff 👨‍💻
 [![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/twitter.svg)](https://twitter.com/josselinbuils)
 [![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/github.svg)](https://github.com/josselinbuils)
 
-## Posts
-
-${posts.map(({ slug, title }) => `- [${title}](/${slug})`).join('\\n')}
+${posts
+  .map(
+    ({ history, readingTime, slug, title }) => `\
+## [${title}](/${slug})
+  ${history.pop()?.commitDate} - ${readingTime}
+`
+  )
+  .join('')}
 `}</Markdown>
   ),
   css

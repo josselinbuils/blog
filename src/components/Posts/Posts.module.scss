@@ -6,6 +6,15 @@
   max-width: 100%;
   margin: 0 auto;
   padding: rem(10px);
+
+  h2 {
+    font-size: 1.3em !important;
+
+    & + p {
+      margin-top: rem(10px);
+      font-size: rem(18px);
+    }
+  }
 }
 
 @media (min-width: 600px) {
