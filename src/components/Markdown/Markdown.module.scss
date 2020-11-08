@@ -113,7 +113,7 @@ $fontSize: rem(20px);
   }
 }
 
-@media (min-width: 600px) {
+@include desktop {
   .markdown pre {
     border-radius: em(4px, $fontSize);
     margin: 0;

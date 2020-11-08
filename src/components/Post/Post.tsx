@@ -9,7 +9,7 @@ import styles, { css } from './Post.module.scss';
 export const Post: FC<Props> = withCSS(
   ({ post }) => (
     <Markdown className={styles.post} tag="article">{`\
-[◀️ Posts](/)
+[< Posts](/)
 
 ${post.content}
 

@@ -1,3 +1,9 @@
+@mixin desktop {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+
 @function em($size, $base) {
   @return $size / $base * 1rem;
 }
