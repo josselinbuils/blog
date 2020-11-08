@@ -15,8 +15,8 @@ Hey, I'm Josselin, a full-stack JavaScript developer 😄
 Here are some posts where I give my opinion on code stuff 👨‍💻
 
 [![{ "alt": "LinkedIn", "height": 40, "width": 40 }](/linkedin.svg)](https://www.linkedin.com/in/josselinbuils)
-[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/twitter.svg)](https://twitter.com/josselinbuils)
-[![{ "alt": "Twitter", "height": 40, "style": { "marginLeft": "2rem" }, "width": 40 }](/github.svg)](https://github.com/josselinbuils)
+[![{ "alt": "Twitter", "height": 40, "width": 40 }](/twitter.svg)](https://twitter.com/josselinbuils)
+[![{ "alt": "Twitter", "height": 40, "width": 40 }](/github.svg)](https://github.com/josselinbuils)
 
 ${posts
   .map(
