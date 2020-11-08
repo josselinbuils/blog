@@ -5,8 +5,8 @@ export const HotReload: FC = () => {
     const socket = new WebSocket(`ws://localhost:3001`);
 
     socket.onmessage = ({ data }) => {
+      console.log(`Hot reload: ${data}`);
       if (data === 'reload') {
-        console.log('Reload...');
         window.location.reload();
       }
     };

@@ -31,10 +31,17 @@ express()
 const wsServer = new ws.Server({ port: WS_PORT });
 let buildProcess: ChildProcess | undefined;
 
+function sendToClients(message: string): void {
+  [...wsServer.clients]
+    .filter((client) => client.readyState === client.OPEN)
+    .forEach((client) => client.send(message));
+}
+
 const build = debounce(function build() {
   const startTime = Date.now();
 
   console.log('Build...');
+  sendToClients('build...');
 
   if (buildProcess) {
     buildProcess.kill();
@@ -55,10 +62,7 @@ const build = debounce(function build() {
           chalk.green('Build success'),
           `${Math.round(Date.now() - startTime) / 1000}s`
         );
-
-        [...wsServer.clients]
-          .filter((client) => client.readyState === client.OPEN)
-          .forEach((client) => client.send('reload'));
+        sendToClients('reload');
       } else {
         console.error(chalk.red('Build error:', error));
       }
