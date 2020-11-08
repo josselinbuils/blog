@@ -72,7 +72,7 @@ const build = debounce(function build() {
 }, BUILD_DEBOUNCE_DELAY_MS);
 
 chokidar
-  .watch(['scripts', 'src'], { cwd: process.cwd() })
+  .watch(['public', 'scripts', 'src'], { cwd: process.cwd() })
   .on('all', (event) => {
     if (['add', 'change', 'unlink'].includes(event)) {
       build();
