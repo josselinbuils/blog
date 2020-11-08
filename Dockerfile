@@ -14,7 +14,8 @@ RUN apt-get update && \
     npm install -g yarn
 
 RUN yarn install --emoji --frozen-lockfile --no-progress && \
-    NODE_ENV=production yarn build
+    NODE_ENV=production yarn build && \
+    git fetch --unshallow
 
 COPY nginx/templates/default.conf.template /etc/nginx/templates/default.conf.template
 
