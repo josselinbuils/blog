@@ -11,13 +11,9 @@
     margin-left: rem(20px);
   }
 
-  h2 {
-    font-size: 1.3em !important;
-
-    & + p {
-      margin-top: rem(10px);
-      font-size: rem(18px);
-    }
+  h3 + p {
+    margin-top: rem(10px);
+    font-size: rem(18px);
   }
 }
 

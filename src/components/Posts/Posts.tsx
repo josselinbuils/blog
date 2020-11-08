@@ -8,7 +8,7 @@ import styles, { css } from './Posts.module.scss';
 export const Posts: FC<Props> = withCSS(
   ({ posts }) => (
     <Markdown className={styles.posts}>{`\
-# Opinionated
+# Blog
 
 Hey, I'm Josselin, a full-stack JavaScript developer 😄
 
@@ -18,10 +18,12 @@ Here are some posts where I give my opinion on code stuff 👨‍💻
 [![{ "alt": "Twitter", "height": 40, "width": 40 }](/twitter.svg)](https://twitter.com/josselinbuils)
 [![{ "alt": "Twitter", "height": 40, "width": 40 }](/github.svg)](https://github.com/josselinbuils)
 
+## Posts
+
 ${posts
   .map(
     ({ history, readingTime, slug, title }) => `\
-## [${title}](/${slug})
+### [${title}](/${slug})
   ${[...history].pop()?.commitDate} - ${readingTime}
 `
   )
