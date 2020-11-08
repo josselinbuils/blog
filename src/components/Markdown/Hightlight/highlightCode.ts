@@ -9,7 +9,7 @@ import 'prismjs/components/prism-scss.min';
 import 'prismjs/components/prism-typescript.min';
 import 'prismjs/components/prism-yaml.min';
 
-import styles from './darcula.module.scss';
+import styles from './Hightlight.module.scss';
 
 export function highlightCode(code: string, language: string): string {
   if (Prism.languages[language] === undefined) {
@@ -41,11 +41,20 @@ function escapeHtml(str: string): string {
 }
 
 function afterTokenizeHook(env: Environment): void {
-  (env.tokens as (string | Token)[])
-    .filter((token) => (token as Token).content === ';')
-    .forEach((token) => {
-      (token as Token).type = 'keyword';
-    });
+  const tokens = env.tokens as (string | Token)[];
+
+  env.tokens = tokens.map((token) => {
+    if (typeof token === 'string') {
+      return token;
+    }
+    if (token.content === ';') {
+      token.type = 'keyword';
+    }
+    if (styles[token.type] === undefined) {
+      return token.content;
+    }
+    return token;
+  });
 }
 
 function removeHook(name: string, callback: hooks.HookCallback): void {
@@ -58,5 +67,6 @@ function removeHook(name: string, callback: hooks.HookCallback): void {
 }
 
 function wrapHook(env: Environment): void {
-  env.classes = (env.classes as string[]).map((c) => styles[c]);
+  env.classes = (env.classes as string[]).slice(1).map((c) => styles[c]);
+  env.tag = 'i';
 }
