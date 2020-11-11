@@ -3,7 +3,7 @@ import { BlogPost } from '../../BlogPost';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
 
-import styles, { css } from './Posts.module.scss';
+import styles, { cssMetadata } from './Posts.module.scss';
 
 export const Posts: FC<Props> = withCSS(
   ({ posts }) => (
@@ -30,7 +30,7 @@ ${posts
   .join('')}
 `}</Markdown>
   ),
-  css
+  cssMetadata
 );
 
 interface Props {

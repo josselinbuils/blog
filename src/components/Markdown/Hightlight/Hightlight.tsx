@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { withCSS } from '../../CSSCollector/withCSS';
 import { highlightCode } from './highlightCode';
 
-import styles, { css } from './Hightlight.module.scss';
+import styles, { cssMetadata } from './Hightlight.module.scss';
 
 export const Highlight: FC<Props> = withCSS(
   ({ code, language }) => (
@@ -12,7 +12,7 @@ export const Highlight: FC<Props> = withCSS(
       />
     </pre>
   ),
-  css
+  cssMetadata
 );
 
 interface Props {

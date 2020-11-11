@@ -4,7 +4,7 @@ import { BlogPost } from '../../BlogPost';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
 
-import styles, { css } from './Post.module.scss';
+import styles, { cssMetadata } from './Post.module.scss';
 
 export const Post: FC<Props> = withCSS(
   ({ post }) => (
@@ -22,7 +22,7 @@ ${post.history
   .join('\n')}
 `}</Markdown>
   ),
-  css
+  cssMetadata
 );
 
 interface Props {

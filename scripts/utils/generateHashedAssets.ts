@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs-extra';
 import baseGlob from 'glob';
-import crypto from 'crypto';
 import { promisify } from 'util';
+import { generateHash } from './generateHash';
 
 const glob = promisify(baseGlob);
 
@@ -21,12 +21,7 @@ export async function generateHashedAssets(
       const extension = path.extname(absolutePath);
       const relativePath = path.relative(publicAbsolutePath, absolutePath);
       const relativeURL = `/${relativePath}`;
-      const content = await fs.readFile(absolutePath);
-      const hash = crypto
-        .createHash('md5')
-        .update(content)
-        .digest('hex')
-        .slice(0, 8);
+      const hash = generateHash(await fs.readFile(absolutePath));
       const newAbsolutePath = path.join(
         distAbsolutePath,
         `assets/${relativePath.slice(0, -extension.length)}.${hash}${extension}`

@@ -39,22 +39,23 @@ const PUBLIC_DIR = 'public';
   ];
 
   function renderFile(content: JSX.Element): string {
-    return minify(
-      assets.reduce(
-        (markup, { newRelativeURL, relativeURL }) =>
-          markup.replace(new RegExp(relativeURL, 'g'), newRelativeURL),
-        `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(
-          <>
-            {process.env.NODE_ENV === 'development' && <HotReload />}
-            {content}
-          </>
-        )}`
-      ),
-      {
-        collapseWhitespace: true,
-        minifyCSS: true,
-      }
+    const rendered = assets.reduce(
+      (markup, { newRelativeURL, relativeURL }) =>
+        markup.replace(new RegExp(relativeURL, 'g'), newRelativeURL),
+      `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(
+        <>
+          {process.env.NODE_ENV === 'development' && <HotReload />}
+          {content}
+        </>
+      )}`
     );
+
+    return process.env.NODE_ENV === 'production'
+      ? minify(rendered, {
+          collapseWhitespace: true,
+          minifyCSS: true,
+        })
+      : rendered;
   }
 
   await Promise.all([

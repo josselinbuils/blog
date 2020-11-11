@@ -3,12 +3,13 @@ import ReactDOMServer from 'react-dom/server';
 import { CSSCollector } from '../CSSCollector/CSSCollector';
 import { HeadCollector } from '../Head/HeadCollector';
 
-import styles, { css } from './Page.module.scss';
+import styles, { cssMetadata } from './Page.module.scss';
 
 export const Page: FC = ({ children }) => {
   const headCollector = new HeadCollector();
   const cssCollector = new CSSCollector();
-  cssCollector.add(css);
+  const { css, id } = cssMetadata;
+  cssCollector.add(id, css);
   const body = ReactDOMServer.renderToStaticMarkup(
     headCollector.collect(
       cssCollector.collect(
@@ -29,7 +30,7 @@ export const Page: FC = ({ children }) => {
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {head}
-          <style dangerouslySetInnerHTML={{ __html: style }} />
+          {style}
         </head>
         <body dangerouslySetInnerHTML={{ __html: body }} />
       </html>

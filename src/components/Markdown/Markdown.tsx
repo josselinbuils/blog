@@ -7,7 +7,7 @@ import { withCSS } from '../CSSCollector/withCSS';
 import { Head } from '../Head/Head';
 import { Highlight } from './Hightlight/Hightlight';
 
-import styles, { css } from './Markdown.module.scss';
+import styles, { cssMetadata } from './Markdown.module.scss';
 
 const renderers = {
   code: ({ language, value }: { language: string; value: string }) => (
@@ -57,7 +57,7 @@ export const Markdown: FC<Props> = withCSS(
       />
     </MarkdownTag>
   ),
-  css
+  cssMetadata
 );
 
 interface Props {

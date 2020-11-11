@@ -1,13 +1,13 @@
 @import '../../utils';
 
-$fontSize: rem(20px);
+$fontSize: 20px;
 
 // see https://github.com/sindresorhus/github-markdown-css/blob/gh-pages/github-markdown.css
 
 .markdown {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
     sans-serif, Apple Color Emoji, Segoe UI Emoji;
-  font-size: $fontSize;
+  font-size: rem($fontSize);
   line-height: 1.5;
   word-wrap: break-word;
 
