@@ -6,9 +6,7 @@ import path from 'path';
 import ws from 'ws';
 import { HotReloadAction } from './utils/HotReload';
 import { debounce } from './utils/debounce';
-import { loadSCSSModule } from './utils/loadSCSSModule';
-
-require('./utils/registerSCSSLoader');
+import { loadSCSSModule } from './utils/loaders/loadSCSSModule';
 
 const DEBOUNCE_DELAY_MS = 200;
 const HTTP_PORT = 3000;

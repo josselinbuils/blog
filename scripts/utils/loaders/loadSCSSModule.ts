@@ -2,7 +2,7 @@ import path from 'path';
 import postcss from 'postcss';
 import postcssModulesSync from 'postcss-modules-sync';
 import sass from 'sass';
-import { generateHash } from './generateHash';
+import { generateHash } from '../generateHash';
 
 export function loadSCSSModule(
   file: string

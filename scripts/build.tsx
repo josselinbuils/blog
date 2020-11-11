@@ -1,6 +1,4 @@
-import { generateHashedAssets } from './utils/generateHashedAssets';
-
-require('./utils/registerSCSSLoader');
+require('./utils/loaders/registerSCSSModuleLoaders');
 
 import fs from 'fs-extra';
 import { minify } from 'html-minifier';
@@ -10,18 +8,17 @@ import ReactDOMServer from 'react-dom/server';
 import { IndexPage } from '../src/pages/IndexPage';
 import { PostPage } from '../src/pages/PostPage';
 import { getBlogPosts } from '../src/utils/getBlogPosts';
+import { DIST_DIR, PUBLIC_DIR } from './constants';
+import { generateHashedAssets } from './utils/generateHashedAssets';
 import { HotReload } from './utils/HotReload';
-
-const DIST_DIR = 'dist';
-const PUBLIC_DIR = 'public';
 
 (async () => {
   const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
   const publicAbsolutePath = path.join(process.cwd(), PUBLIC_DIR);
-  const posts = await getBlogPosts();
 
   await fs.emptyDirSync(distAbsolutePath);
 
+  const posts = await getBlogPosts();
   const assets = await generateHashedAssets(
     publicAbsolutePath,
     distAbsolutePath
