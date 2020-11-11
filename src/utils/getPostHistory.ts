@@ -24,9 +24,7 @@ export function getPostHistory(
       .toString()
       .trim()
       .split('\n')
-      .filter(
-        (line) => line && !line.includes(path.relative(process.cwd(), filename))
-      )
+      .filter((line) => /^[a-z0-9]{40} \d+/.test(line))
       .map((line) => {
         const result = line.split(' ');
         return {
