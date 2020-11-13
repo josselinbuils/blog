@@ -1,3 +1,3 @@
-export function getPostSlug(path: string): string {
-  return path.replace(/^.*[\\/]/g, '').slice(0, -3);
+export function getPostSlug(filename: string): string {
+  return filename.replace(/^.*[\\/]/g, '').slice(0, -3);
 }

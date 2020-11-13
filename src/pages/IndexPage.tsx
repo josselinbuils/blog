@@ -3,8 +3,13 @@ import { BlogPost } from '../BlogPost';
 import { Head } from '../components/Head/Head';
 import { Page } from '../components/Page/Page';
 import { Posts } from '../components/Posts/Posts';
+import { getBlogPosts } from '../utils/getBlogPosts';
 
-export const IndexPage: FC<Props> = ({ posts }) => (
+interface Props {
+  posts: BlogPost[];
+}
+
+const IndexPage: FC<Props> = ({ posts }) => (
   <Page>
     <Head>
       <title>Blog</title>
@@ -17,6 +22,13 @@ export const IndexPage: FC<Props> = ({ posts }) => (
   </Page>
 );
 
-interface Props {
-  posts: BlogPost[];
+export default IndexPage;
+
+export async function getPageProps(): Promise<Props> {
+  const posts = await getBlogPosts();
+  return { posts };
+}
+
+export async function getPageSlugs(): Promise<string[]> {
+  return ['index'];
 }
