@@ -2,14 +2,16 @@ import path from 'path';
 import fs from 'fs-extra';
 import baseGlob from 'glob';
 import { promisify } from 'util';
+import { DIST_DIR, PUBLIC_DIR } from '../constants';
 import { generateHash } from './generateHash';
 
 const glob = promisify(baseGlob);
+const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
+const publicAbsolutePath = path.join(process.cwd(), PUBLIC_DIR);
 
-export async function generateHashedAssets(
-  publicAbsolutePath: string,
-  distAbsolutePath: string
-): Promise<{ newRelativeURL: string; relativeURL: string }[]> {
+export async function generateHashedAssets(): Promise<
+  { newRelativeURL: string; relativeURL: string }[]
+> {
   const assetPaths = await glob(`${publicAbsolutePath}/**/*`, {
     absolute: true,
     cwd: '/',

@@ -5,21 +5,17 @@ import { minify } from 'html-minifier';
 import path from 'path';
 import React, { ReactNode } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { DIST_DIR, PUBLIC_DIR } from './constants';
+import { DIST_DIR } from './constants';
 import { generateHashedAssets } from './utils/generateHashedAssets';
 import { getPages } from './utils/getPages';
 import { HotReload } from './utils/HotReload';
 
 (async () => {
   const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
-  const publicAbsolutePath = path.join(process.cwd(), PUBLIC_DIR);
 
   await fs.emptyDirSync(distAbsolutePath);
 
-  const assets = await generateHashedAssets(
-    publicAbsolutePath,
-    distAbsolutePath
-  );
+  const assets = await generateHashedAssets();
 
   function renderFile(content: ReactNode): string {
     const rendered = assets.reduce(

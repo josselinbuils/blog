@@ -20,6 +20,10 @@ express()
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     next();
   })
+  .use((req, _res, next) => {
+    console.log(req.url);
+    next();
+  })
   .use(
     HTTP_PREFIX,
     express.static('dist', {

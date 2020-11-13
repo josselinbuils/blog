@@ -24,12 +24,11 @@ export async function getPages(): Promise<Page[]> {
       filename
     );
 
-    pages.push(
-      ...(await getPageSlugs()).map(async (slug: string) => ({
-        content: <Component {...await getPageProps(slug)} />,
-        slug,
-      }))
-    );
+    for (const slug of await getPageSlugs()) {
+      const props = await getPageProps(slug);
+      const content = <Component {...props} />;
+      pages.push({ content, slug });
+    }
   }
   return pages;
 }
