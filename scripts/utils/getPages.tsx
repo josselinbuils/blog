@@ -6,7 +6,7 @@ import { promisify } from 'util';
 const glob = promisify(baseGlob);
 const pagesDir = path.join(process.cwd(), 'src/pages');
 
-interface Page {
+export interface Page {
   content: ReactNode;
   slug: string;
 }

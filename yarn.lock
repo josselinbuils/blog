@@ -67,6 +67,11 @@
   resolved "https://registry.yarnpkg.com/@josselinbuils/exec-staged/-/exec-staged-0.1.1.tgz#c003c68874ddc3deea993792f395b7224aa32e64"
   integrity sha512-xU/FBe5FGvtm5ncW5ftG3svsERD/mZZhSZfwoKlPLPtknjrTZc9WAeZzRKRF9nZXn+fEjg34dtZhDNQoAwz8Bw==
 
+"@josselinbuils/utils@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@josselinbuils/utils/-/utils-0.1.2.tgz#32cba7ce9da4e286a733a551191a8876d6074028"
+  integrity sha512-86iAQwyhx0n9jpf9sE8Bju3MT4jzQ1vok+dBusovUcRAu9VuRaPx7TXWabc2LQO1IhwdEhGNsTZtZcirmRXhEA==
+
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.3.tgz#3a582bdb53804c6ba6d146579c46e52130cf4a3b"

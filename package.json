@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@josselinbuils/exec-staged": "^0.1.1",
+    "@josselinbuils/utils": "^0.1.2",
     "@types/classnames": "^2.2.11",
     "@types/express": "^4.17.8",
     "@types/fs-extra": "^9.0.3",

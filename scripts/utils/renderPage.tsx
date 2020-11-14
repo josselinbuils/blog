@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { minify } from 'html-minifier';
 import ReactDOMServer from 'react-dom/server';
 import { HashedAsset } from './generateHashedAssets';
-import { HotReload } from './HotReload';
+import { HotReloadClient } from './hotReload/HotReloadClient';
 
 export function renderPage(content: ReactNode, assets: HashedAsset[]): string {
   const rendered = assets.reduce(
@@ -10,7 +10,7 @@ export function renderPage(content: ReactNode, assets: HashedAsset[]): string {
       markup.replace(new RegExp(fromRelativeURL, 'g'), toRelativeURL),
     `<!DOCTYPE html>${ReactDOMServer.renderToStaticMarkup(
       <>
-        {process.env.NODE_ENV === 'development' && <HotReload />}
+        {process.env.NODE_ENV === 'development' && <HotReloadClient />}
         {content}
       </>
     )}`

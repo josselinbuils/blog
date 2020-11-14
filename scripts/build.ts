@@ -17,7 +17,7 @@ import { renderPage } from './utils/renderPage';
   await Promise.all([
     (await getPages()).map(({ content, slug }) =>
       fs.outputFile(
-        path.join(distAbsolutePath, `${slug}.html`),
+        path.join(distAbsolutePath, `${slug || 'index'}.html`),
         renderPage(content, assets),
         'utf8'
       )

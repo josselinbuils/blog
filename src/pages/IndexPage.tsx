@@ -30,5 +30,5 @@ export async function getPageProps(): Promise<Props> {
 }
 
 export async function getPageSlugs(): Promise<string[]> {
-  return ['index'];
+  return [''];
 }
