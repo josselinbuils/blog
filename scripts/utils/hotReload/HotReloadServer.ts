@@ -1,4 +1,3 @@
-import { Deferred } from '@josselinbuils/utils';
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
@@ -10,24 +9,26 @@ import { generateHashedAssets } from '../generateHashedAssets';
 import { getPages, Page } from '../getPages';
 import { renderPage } from '../renderPage';
 import { HotReloadAction } from './HotReloadAction';
-import { fillDependencyMap } from '../fillDependencyMap';
+import { ExecQueue } from './utils/ExecQueue';
+import { fillDependencyMap } from './utils/fillDependencyMap';
 
 const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
 
-// TODO add build queue
 export class HotReloadServer extends Server {
   private assets = [] as HashedAsset[];
   private readonly clientPathnames = [] as string[];
   private readonly dependencyMap = {} as { [filename: string]: Set<string> };
+  private readonly execQueue = new ExecQueue();
   private pages = [] as Page[];
-  private readyDeferred = new Deferred();
 
   constructor(options: ServerOptions) {
     super(options);
 
-    this.reloadAsset = this.reloadAsset.bind(this);
-    this.reloadSourceFile = this.reloadSourceFile.bind(this);
-    this.tryToBuildPage = this.tryToBuildPage.bind(this);
+    const { execQueue, reloadAsset, reloadSourceFile, tryToBuildPage } = this;
+
+    this.reloadAsset = execQueue.makeSync(reloadAsset.bind(this));
+    this.reloadSourceFile = execQueue.makeSync(reloadSourceFile.bind(this));
+    this.tryToBuildPage = execQueue.makeSync(tryToBuildPage.bind(this));
 
     this.on('connection', (client) => {
       client.on('message', (data: string) => {
@@ -35,15 +36,13 @@ export class HotReloadServer extends Server {
           const action = JSON.parse(data) as HotReloadAction;
 
           if (action.type === 'setClientPathname') {
+            const { clientPathnames } = this;
             const { pathname } = action.payload;
 
-            this.clientPathnames.push(pathname);
+            clientPathnames.push(pathname);
 
             client.on('close', () => {
-              this.clientPathnames.splice(
-                this.clientPathnames.indexOf(pathname),
-                1
-              );
+              clientPathnames.splice(clientPathnames.indexOf(pathname), 1);
             });
           }
         } catch (error) {
@@ -52,7 +51,7 @@ export class HotReloadServer extends Server {
       });
     });
 
-    (async () => {
+    this.execQueue.enqueue(async () => {
       const startTime = Date.now();
 
       console.log('Build core...');
@@ -77,23 +76,31 @@ export class HotReloadServer extends Server {
         chalk.green('Build success'),
         `${Math.round(Date.now() - startTime) / 1000}s`
       );
-
-      this.readyDeferred.resolve();
-    })();
+    });
   }
 
   async tryToBuildPage(url: string): Promise<boolean> {
-    const startTime = Date.now();
-
-    await this.readyDeferred.promise;
-
     const requestedSlug = url.slice(1);
     const page = this.pages.find(({ slug }) => slug === requestedSlug);
 
     if (page === undefined) {
       return false;
     }
-    const { absolutePath, factory, slug } = page;
+
+    try {
+      await this.buildPage(page);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  private async buildPage({
+    absolutePath,
+    factory,
+    slug,
+  }: Page): Promise<void> {
+    const startTime = Date.now();
 
     console.log(`Build page: /${slug}`);
 
@@ -118,13 +125,10 @@ export class HotReloadServer extends Server {
         type: 'reloadPage',
         payload: { pathname: `/${slug}` },
       });
-
-      return true;
     } catch (error) {
       console.error(chalk.red(`Build error: ${error.stack}`));
       this.sendToClients(`build error:\n\n${error.stack}`);
     }
-    return false;
   }
 
   private getUniquePathnames(): string[] {
@@ -132,9 +136,6 @@ export class HotReloadServer extends Server {
   }
 
   private async reloadAsset(relativeFilePath: string): Promise<void> {
-    await this.readyDeferred.promise;
-    this.readyDeferred = new Deferred();
-
     const asset = this.assets.find(({ fromRelativeURL }) =>
       relativeFilePath.endsWith(fromRelativeURL)
     );
@@ -155,7 +156,6 @@ export class HotReloadServer extends Server {
 
       console.log(`Created ${path.join(DIST_DIR, newAsset.toRelativeURL)}`);
     }
-    this.readyDeferred.resolve();
 
     this.getUniquePathnames().forEach((pathname) => {
       this.sendToClients({
@@ -168,8 +168,6 @@ export class HotReloadServer extends Server {
   private async reloadSourceFile(relativeFilePath: string): Promise<void> {
     const absoluteFilePath = path.join(process.cwd(), relativeFilePath);
 
-    await this.readyDeferred.promise;
-
     if (await fs.pathExists(relativeFilePath)) {
       console.log(`Reload ${relativeFilePath}`);
     } else {
@@ -179,7 +177,14 @@ export class HotReloadServer extends Server {
     this.dependencyMap[absoluteFilePath]?.forEach((filename) => {
       delete require.cache[filename];
     });
-    await Promise.all(this.getUniquePathnames().map(this.tryToBuildPage));
+
+    for (const pathname of this.getUniquePathnames()) {
+      const page = this.pages.find(({ slug }) => slug === pathname.slice(1));
+
+      if (page !== undefined) {
+        await this.buildPage(page);
+      }
+    }
   }
 
   private sendToClients(data: string | HotReloadAction): void {

@@ -1,5 +1,5 @@
 import path from 'path';
-import { SRC_DIR } from '../constants';
+import { SRC_DIR } from '../../../constants';
 
 const srcAbsolutePath = path.join(process.cwd(), SRC_DIR);
 
@@ -16,9 +16,9 @@ export function fillDependencyMap(
         }
         map[childModule.filename].add(childModule.filename);
         map[childModule.filename].add(module.filename);
-        map[module.filename]?.forEach((filename) =>
-          map[childModule.filename].add(filename)
-        );
+        map[module.filename]?.forEach((filename) => {
+          map[childModule.filename].add(filename);
+        });
         fillDependencyMap(map, childModule);
       });
   }
