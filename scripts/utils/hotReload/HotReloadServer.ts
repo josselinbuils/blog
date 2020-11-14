@@ -8,15 +8,17 @@ import { DIST_DIR, PUBLIC_DIR, SRC_DIR } from '../../constants';
 import { generateHashedAsset, HashedAsset } from '../generateHashedAsset';
 import { generateHashedAssets } from '../generateHashedAssets';
 import { getPages, Page } from '../getPages';
-import { loadSCSSModule } from '../loaders/loadSCSSModule';
 import { renderPage } from '../renderPage';
 import { HotReloadAction } from './HotReloadAction';
+import { fillDependencyMap } from '../fillDependencyMap';
 
 const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
 
+// TODO add build queue
 export class HotReloadServer extends Server {
   private assets = [] as HashedAsset[];
   private readonly clientPathnames = [] as string[];
+  private readonly dependencyMap = {} as { [filename: string]: Set<string> };
   private pages = [] as Page[];
   private readyDeferred = new Deferred();
 
@@ -24,7 +26,6 @@ export class HotReloadServer extends Server {
     super(options);
 
     this.reloadAsset = this.reloadAsset.bind(this);
-    this.reloadSCSSModule = this.reloadSCSSModule.bind(this);
     this.reloadSourceFile = this.reloadSourceFile.bind(this);
     this.tryToBuildPage = this.tryToBuildPage.bind(this);
 
@@ -62,17 +63,13 @@ export class HotReloadServer extends Server {
 
       const chokidarOptions = { cwd: process.cwd(), ignoreInitial: true };
 
-      chokidar
-        .watch(`${SRC_DIR}/**/*.module.scss`, chokidarOptions)
-        .on('change', this.reloadSCSSModule);
-
       ['add', 'change', 'unlink'].forEach((eventName) => {
         chokidar
           .watch(PUBLIC_DIR, chokidarOptions)
           .on(eventName, this.reloadAsset);
 
         chokidar
-          .watch(`${SRC_DIR}/**/*.!(scss)`, chokidarOptions)
+          .watch(SRC_DIR, chokidarOptions)
           .on(eventName, this.reloadSourceFile);
       });
 
@@ -96,7 +93,7 @@ export class HotReloadServer extends Server {
     if (page === undefined) {
       return false;
     }
-    const { factory, slug } = page;
+    const { absolutePath, factory, slug } = page;
 
     console.log(`Build page: /${slug}`);
 
@@ -105,6 +102,11 @@ export class HotReloadServer extends Server {
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
         renderPage(await factory(), this.assets),
         'utf8'
+      );
+
+      fillDependencyMap(
+        this.dependencyMap,
+        require.cache[absolutePath] as NodeJS.Module
       );
 
       console.log(
@@ -163,17 +165,6 @@ export class HotReloadServer extends Server {
     });
   }
 
-  private async reloadSCSSModule(relativeFilePath: string): Promise<void> {
-    await this.readyDeferred.promise;
-
-    console.log(`Reload ${relativeFilePath}`);
-
-    const { css, id } = loadSCSSModule(
-      path.join(process.cwd(), relativeFilePath)
-    );
-    this.sendToClients({ type: 'reloadCSS', payload: { css, id } });
-  }
-
   private async reloadSourceFile(relativeFilePath: string): Promise<void> {
     const absoluteFilePath = path.join(process.cwd(), relativeFilePath);
 
@@ -181,8 +172,13 @@ export class HotReloadServer extends Server {
 
     if (await fs.pathExists(relativeFilePath)) {
       console.log(`Reload ${relativeFilePath}`);
+    } else {
+      console.log(`Unload ${relativeFilePath}`);
     }
-    delete require.cache[absoluteFilePath];
+
+    this.dependencyMap[absoluteFilePath]?.forEach((filename) => {
+      delete require.cache[filename];
+    });
     await Promise.all(this.getUniquePathnames().map(this.tryToBuildPage));
   }
 
