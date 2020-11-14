@@ -26,7 +26,7 @@
       font-size: 0.6em;
       border-radius: $size;
       font-weight: 500;
-      padding-left: 0.3em;
+      padding-left: calc(#{$size} / 2 - 0.55ch);
       box-sizing: border-box;
     }
   }
