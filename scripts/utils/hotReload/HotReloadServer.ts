@@ -18,11 +18,35 @@ const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
 
 export class HotReloadServer extends Server {
   private assets = [] as HashedAsset[];
+  private readonly clientPathnames = [] as string[];
   private pages = [] as Page[];
-  private readyDeferred = new Deferred();
+  private readonly readyDeferred = new Deferred();
 
   constructor(options: ServerOptions) {
     super(options);
+
+    this.on('connection', (client) => {
+      client.on('message', (data: string) => {
+        try {
+          const action = JSON.parse(data) as HotReloadAction;
+
+          if (action.type === 'setClientPathname') {
+            const { pathname } = action.payload;
+
+            this.clientPathnames.push(pathname);
+
+            client.on('close', () => {
+              this.clientPathnames.splice(
+                this.clientPathnames.indexOf(pathname),
+                1
+              );
+            });
+          }
+        } catch (error) {
+          console.error(`Unable to parse client message: ${error.stack}`);
+        }
+      });
+    });
 
     (async () => {
       const startTime = Date.now();
@@ -34,14 +58,26 @@ export class HotReloadServer extends Server {
       this.pages = await getPages();
 
       const reloadCSS = debounce(this.reloadCSS.bind(this), DEBOUNCE_DELAY_MS);
+      const tryToBuildPage = debounce(
+        this.tryToBuildPage.bind(this),
+        DEBOUNCE_DELAY_MS
+      );
 
       chokidar
         .watch([PUBLIC_DIR, SCRIPTS_DIR, SRC_DIR], { cwd: process.cwd() })
-        .on('all', (event, filePath) => {
-          if (event == 'change' && /\.s?css$/.test(filePath)) {
-            reloadCSS(filePath);
+        .on('all', async (event, relativeFilePath) => {
+          const absoluteFilePath = path.join(process.cwd(), relativeFilePath);
+
+          if (event == 'change' && /\.s?css$/.test(absoluteFilePath)) {
+            reloadCSS(absoluteFilePath);
           } else if (['add', 'change', 'unlink'].includes(event)) {
-            // build();
+            const uniquePathnames = [...new Set(this.clientPathnames)];
+
+            delete require.cache[absoluteFilePath];
+
+            for (const pathname of uniquePathnames) {
+              tryToBuildPage(pathname);
+            }
           }
         });
 
@@ -65,14 +101,14 @@ export class HotReloadServer extends Server {
     if (page === undefined) {
       return false;
     }
-    const { content, slug } = page;
+    const { factory, slug } = page;
 
     console.log(`Build page: /${slug}`);
 
     try {
       await fs.outputFile(
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
-        renderPage(content, this.assets),
+        renderPage(await factory(), this.assets),
         'utf8'
       );
 
@@ -94,8 +130,8 @@ export class HotReloadServer extends Server {
     return false;
   }
 
-  private reloadCSS(filePath: string) {
-    const { css, id } = loadSCSSModule(path.join(process.cwd(), filePath));
+  private reloadCSS(absoluteFilePath: string) {
+    const { css, id } = loadSCSSModule(absoluteFilePath);
     console.log(`Reload ${id}`);
     this.sendToClients({ type: 'reloadCSS', payload: { css, id } });
   }

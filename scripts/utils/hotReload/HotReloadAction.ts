@@ -22,7 +22,15 @@ interface ReloadPageAction extends Action {
   };
 }
 
+interface SetClientPathnameAction extends Action {
+  type: 'setClientPathname';
+  payload: {
+    pathname: string;
+  };
+}
+
 export type HotReloadAction =
   | MessageAction
   | ReloadCSSAction
-  | ReloadPageAction;
+  | ReloadPageAction
+  | SetClientPathnameAction;

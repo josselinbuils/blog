@@ -7,7 +7,7 @@ const glob = promisify(baseGlob);
 const pagesDir = path.join(process.cwd(), 'src/pages');
 
 export interface Page {
-  content: ReactNode;
+  factory: () => Promise<ReactNode>;
   slug: string;
 }
 
@@ -17,18 +17,23 @@ export async function getPages(): Promise<Page[]> {
     cwd: pagesDir,
     nodir: true,
   });
-  const pages = [] as Page[];
 
-  for (const filename of pageFiles) {
-    const { default: Component, getPageProps, getPageSlugs } = await import(
-      filename
-    );
+  const pageSlugPromises = pageFiles.map(async (filename) => {
+    const { getPageSlugs } = await import(filename);
+    const slugs = await getPageSlugs();
+    return slugs.map((slug: string) => ({ filename, slug }));
+  });
 
-    for (const slug of await getPageSlugs()) {
+  const pageSlugs = (await Promise.all(pageSlugPromises)).flat();
+
+  return pageSlugs.map(({ filename, slug }) => {
+    // Prevents keeping the context because of filename
+    const factory = async () => {
+      delete require.cache[filename];
+      const { default: Component, getPageProps } = await import(filename);
       const props = await getPageProps(slug);
-      const content = <Component {...props} />;
-      pages.push({ content, slug });
-    }
-  }
-  return pages;
+      return <Component {...props} />;
+    };
+    return { factory, slug };
+  });
 }

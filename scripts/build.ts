@@ -12,13 +12,16 @@ import { renderPage } from './utils/renderPage';
 
   await fs.emptyDirSync(distAbsolutePath);
 
-  const assets = await generateHashedAssets();
+  const [assets, pages] = await Promise.all([
+    generateHashedAssets(),
+    getPages(),
+  ]);
 
   await Promise.all([
-    (await getPages()).map(({ content, slug }) =>
+    pages.map(async ({ factory, slug }) =>
       fs.outputFile(
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
-        renderPage(content, assets),
+        renderPage(await factory(), assets),
         'utf8'
       )
     ),

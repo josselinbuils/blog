@@ -6,6 +6,14 @@ export const HotReloadClient: FC = () => {
     const LOG_HEADER = 'Hot reload: ';
     const socket = new WebSocket(`ws://localhost:3001`);
 
+    socket.onopen = () =>
+      socket.send(
+        JSON.stringify({
+          type: 'setClientPathname',
+          payload: { pathname: window.location.pathname },
+        } as HotReloadAction)
+      );
+
     socket.onmessage = ({ data }) => {
       try {
         const action = JSON.parse(data) as HotReloadAction;
