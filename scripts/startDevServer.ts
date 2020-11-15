@@ -1,6 +1,7 @@
 require('./utils/loaders/registerSCSSModuleLoaders');
 
 import express from 'express';
+import { DIST_DIR } from './constants';
 import { HotReloadServer } from './utils/hotReload/HotReloadServer';
 
 const HTTP_PORT = 3000;
@@ -22,7 +23,7 @@ express()
   })
   .use(
     HTTP_PREFIX,
-    express.static('dist', {
+    express.static(DIST_DIR, {
       cacheControl: false,
       extensions: ['html'],
     })
