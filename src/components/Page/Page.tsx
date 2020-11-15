@@ -14,7 +14,12 @@ export const Page: FC = ({ children }) => {
     headCollector.collect(
       cssCollector.collect(
         <>
-          <input className={styles.lighting} role="switch" type="checkbox" />
+          <input
+            aria-hidden
+            className={styles.lighting}
+            role="switch"
+            type="checkbox"
+          />
           <main className={styles.main}>{children}</main>
         </>
       )
