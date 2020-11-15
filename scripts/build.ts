@@ -1,10 +1,9 @@
-require('./utils/loaders/registerSCSSModuleLoaders');
-
 import fs from 'fs-extra';
 import path from 'path';
 import { DIST_DIR } from './constants';
 import { generateHashedAssets } from './utils/generateHashedAssets';
 import { getPages } from './utils/getPages';
+import './utils/loaders/registerSCSSModuleLoaders';
 import { renderPage } from './utils/renderPage';
 
 (async () => {

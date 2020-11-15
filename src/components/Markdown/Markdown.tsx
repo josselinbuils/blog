@@ -13,26 +13,28 @@ const renderers = {
   code: ({ language, value }: { language: string; value: string }) => (
     <Highlight code={value} language={language} />
   ),
-  image: ({ alt, src }: { alt: string; src: string }) => {
-    let props = { alt } as ImgHTMLAttributes<HTMLImageElement>;
+  image: ({ alt: options, src }: { alt: string; src: string }) => {
+    let props = { alt: options } as ImgHTMLAttributes<HTMLImageElement>;
 
     src = getURL(src);
 
     try {
-      props = JSON.parse(alt);
+      props = JSON.parse(options);
     } catch (e) {
       // Ignored
     }
     // TODO manage srcSet and base url
 
+    const { alt, loading } = props;
+
     return (
       <>
-        {props.loading !== 'lazy' && (
+        {loading !== 'lazy' && (
           <Head>
             <link rel="preload" href={src} as="image" />
           </Head>
         )}
-        <img src={src} {...props} />
+        <img alt={alt} src={src} {...props} />
       </>
     );
   },

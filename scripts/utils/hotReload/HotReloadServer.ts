@@ -182,6 +182,7 @@ export class HotReloadServer extends Server {
       const page = this.pages.find(({ slug }) => slug === pathname.slice(1));
 
       if (page !== undefined) {
+        // eslint-disable-next-line no-await-in-loop
         await this.buildPage(page);
       }
     }

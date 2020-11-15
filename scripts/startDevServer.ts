@@ -1,7 +1,6 @@
-require('./utils/loaders/registerSCSSModuleLoaders');
-
 import express from 'express';
 import { DIST_DIR } from './constants';
+import './utils/loaders/registerSCSSModuleLoaders';
 import { HotReloadServer } from './utils/hotReload/HotReloadServer';
 
 const HTTP_PORT = 3000;

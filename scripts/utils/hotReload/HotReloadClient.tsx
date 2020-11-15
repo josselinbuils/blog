@@ -32,6 +32,9 @@ export const HotReloadClient: FC = () => {
             }
             break;
           }
+
+          default:
+            console.log(`${LOG_HEADER}Unknown action received: ${action.type}`);
         }
       } catch (error) {
         console.error(`${LOG_HEADER}parsing error:`, error);

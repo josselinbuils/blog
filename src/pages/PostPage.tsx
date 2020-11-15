@@ -24,7 +24,7 @@ const PostPage: FC<Props> = ({ post }) => (
 export default PostPage;
 
 export async function getPageProps(slug: string): Promise<Props> {
-  const post = (await getBlogPosts()).find((post) => post.slug === slug);
+  const post = (await getBlogPosts()).find((p) => p.slug === slug);
 
   if (post === undefined) {
     throw new Error(`Unable to find post with slug ${slug}`);

@@ -10,7 +10,7 @@ export function loadSCSSModule(
   const id = path.relative(process.cwd(), file);
   let styles: Record<string, string> = {};
 
-  let sassResult = sass
+  const sassResult = sass
     .renderSync({ file })
     .css.toString()
     .replace(/^@charset.+\n/, '');

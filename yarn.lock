@@ -62,6 +62,22 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@josselinbuils/eslint-config@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@josselinbuils/eslint-config/-/eslint-config-0.1.0.tgz#b662a2ff85d255aaecf4e8f3abd148800e482af6"
+  integrity sha512-bai0u2QvNeAUUFQ3QDC7xCz/otvcT4GXPyOKYwJDDIl0v2wDnG5cexkuA2rhoRV+uw0GQx5fEGDeDPPxu4IwHw==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "^4.7.0"
+    "@typescript-eslint/parser" "^4.7.0"
+    eslint-config-airbnb "^18.2.1"
+    eslint-config-prettier "^6.15.0"
+    eslint-import-resolver-typescript "^2.3.0"
+    eslint-plugin-import "^2.22.1"
+    eslint-plugin-jsx-a11y "^6.4.1"
+    eslint-plugin-prettier "^3.1.4"
+    eslint-plugin-react "^7.21.5"
+    eslint-plugin-react-hooks "^4.2.0"
+
 "@josselinbuils/exec-staged@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@josselinbuils/exec-staged/-/exec-staged-0.1.1.tgz#c003c68874ddc3deea993792f395b7224aa32e64"
