@@ -24,7 +24,9 @@ export function getPostHistory(
       .toString()
       .trim()
       .split('\n')
-      .filter((line) => /^[a-z0-9]{40} \d+/.test(line))
+      .filter(
+        (line) => /^[a-z0-9]{40} \d+/.test(line) && line.includes('#post')
+      )
       .map((line) => {
         const result = line.split(' ');
         return {
@@ -32,7 +34,7 @@ export function getPostHistory(
             'MMM D, YYYY'
           ),
           commitHash: result[0],
-          commitSubject: result.slice(2).join(' '),
+          commitSubject: result.slice(2).join(' ').split(' #post')[0],
         };
       });
   } catch (error) {
