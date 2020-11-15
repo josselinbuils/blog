@@ -7,14 +7,6 @@ interface MessageAction extends Action {
   payload: string;
 }
 
-interface ReloadCSSAction extends Action {
-  type: 'reloadCSS';
-  payload: {
-    css: string;
-    id: string;
-  };
-}
-
 interface ReloadPageAction extends Action {
   type: 'reloadPage';
   payload: {
@@ -31,6 +23,5 @@ interface SetClientPathnameAction extends Action {
 
 export type HotReloadAction =
   | MessageAction
-  | ReloadCSSAction
   | ReloadPageAction
   | SetClientPathnameAction;

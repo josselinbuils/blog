@@ -23,17 +23,6 @@ export const HotReloadClient: FC = () => {
             console.log(`${LOG_HEADER}${action.payload}`);
             break;
 
-          case 'reloadCSS': {
-            const { css, id } = action.payload;
-            const styleElement = document.getElementById(id);
-
-            if (styleElement !== null) {
-              console.log(`${LOG_HEADER}reload ${id}`);
-              styleElement.innerHTML = css;
-            }
-            break;
-          }
-
           case 'reloadPage': {
             const { pathname } = action.payload;
 
