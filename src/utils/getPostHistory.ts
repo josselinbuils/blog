@@ -15,7 +15,7 @@ export function getPostHistory(
   try {
     return childProcess
       .execSync(
-        `git log --follow --no-merges --name-only --format="%H %ct %s" -p ${path.join(
+        `git log --follow --no-merges --name-only --format="%H %at %s" -p ${path.join(
           process.cwd(),
           'src/posts',
           filename
