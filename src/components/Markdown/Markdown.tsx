@@ -9,11 +9,34 @@ import { Highlight } from './Hightlight/Hightlight';
 
 import styles, { cssMetadata } from './Markdown.module.scss';
 
-const renderers = {
-  code: ({ language, value }: { language: string; value: string }) => (
-    <Highlight code={value} language={language} />
-  ),
-  image: ({ alt: options, src }: { alt: string; src: string }) => {
+const components = {
+  a: ({ children, href }: { children: ReactNode; href: string }) =>
+    href.startsWith('/') ? (
+      <a href={getURL(href)}>{children}</a>
+    ) : (
+      <a href={href} rel="noreferrer" target="_blank">
+        {children}
+      </a>
+    ),
+  code({
+    className,
+    children,
+  }: {
+    className: string | undefined;
+    children: string[];
+  }) {
+    const language = /language-(\w+)/.exec(className || '')?.[1];
+
+    return language ? (
+      <Highlight
+        code={String(children).replace(/\n$/, '')}
+        language={language}
+      />
+    ) : (
+      <code>{children}</code>
+    );
+  },
+  img: ({ alt: options, src }: { alt: string; src: string }) => {
     let props = { alt: options } as ImgHTMLAttributes<HTMLImageElement>;
 
     src = getURL(src);
@@ -38,14 +61,6 @@ const renderers = {
       </>
     );
   },
-  link: ({ children, href }: { children: ReactNode; href: string }) =>
-    href.startsWith('/') ? (
-      <a href={getURL(href)}>{children}</a>
-    ) : (
-      <a href={href} rel="noreferrer" target="_blank">
-        {children}
-      </a>
-    ),
 };
 
 export const Markdown: FC<Props> = withCSS(
@@ -53,10 +68,11 @@ export const Markdown: FC<Props> = withCSS(
     <MarkdownTag className={cn(styles.markdown, className)}>
       <ReactMarkdown
         plugins={[remarkGfm]}
-        renderers={renderers}
-        source={children as string}
+        components={components as any}
         {...forwardedProps}
-      />
+      >
+        {children as string}
+      </ReactMarkdown>
     </MarkdownTag>
   ),
   cssMetadata

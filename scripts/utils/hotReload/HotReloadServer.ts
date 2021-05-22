@@ -1,3 +1,4 @@
+import { ExecQueue } from '@josselinbuils/utils/ExecQueue';
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
@@ -9,7 +10,6 @@ import { generateHashedAssets } from '../generateHashedAssets';
 import { getPages, Page } from '../getPages';
 import { renderPage } from '../renderPage';
 import { HotReloadAction } from './HotReloadAction';
-import { ExecQueue } from './utils/ExecQueue';
 import { fillDependencyMap } from './utils/fillDependencyMap';
 
 const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
