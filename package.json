@@ -19,7 +19,7 @@
     }
   },
   "devDependencies": {
-    "@josselinbuils/eslint-config": "^0.1.0",
+    "@josselinbuils/eslint-config-react": "^0.1.0",
     "@josselinbuils/exec-staged": "^0.1.1",
     "@josselinbuils/utils": "^0.1.2",
     "@types/classnames": "^2.2.11",
