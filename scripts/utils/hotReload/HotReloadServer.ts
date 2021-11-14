@@ -45,7 +45,7 @@ export class HotReloadServer extends Server {
               clientPathnames.splice(clientPathnames.indexOf(pathname), 1);
             });
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error(`Unable to parse client message: ${error.stack}`);
         }
       });
@@ -125,7 +125,7 @@ export class HotReloadServer extends Server {
         type: 'reloadPage',
         payload: { pathname: `/${slug}` },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(chalk.red(`Build error: ${error.stack}`));
       this.sendToClients(`build error:\n\n${error.stack}`);
     }

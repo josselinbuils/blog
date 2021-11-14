@@ -13,11 +13,13 @@ export class CSSCollector {
     }
   };
 
+  collector = { add: this.add };
+
   collect(children: ReactNode) {
-    const { add } = this;
+    const { collector } = this;
 
     return (
-      <CSSCollectorContext.Provider value={{ add }}>
+      <CSSCollectorContext.Provider value={collector}>
         {children}
       </CSSCollectorContext.Provider>
     );

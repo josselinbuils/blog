@@ -8,7 +8,7 @@ ENV HTTP_PREFIX $HTTP_PREFIX
 
 RUN apt-get update && \
     apt-get -y install curl gnupg && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get -y install nodejs && \
     apt-get install -y git && \
     npm install -g yarn

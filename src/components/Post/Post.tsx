@@ -16,9 +16,10 @@ ${post.content}
 ## History
 
 ${post.history
-  .map(({ commitDate, commitHash, commitSubject }) => {
-    return `- [${commitSubject}](${repository}/commit/${commitHash}) committed on ${commitDate}.`;
-  })
+  .map(
+    ({ commitDate, commitHash, commitSubject }) =>
+      `- [${commitSubject}](${repository}/commit/${commitHash}) committed on ${commitDate}.`
+  )
   .join('\n')}
 `}</Markdown>
   ),

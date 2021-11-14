@@ -7,22 +7,23 @@ export const HeadCollectorContext = createContext({
 export class HeadCollector {
   readonly nodes = [] as ReactNode[];
 
-  add = (children: ReactNode) => {
-    this.nodes.push(children);
+  collector = {
+    add: (children: ReactNode) => {
+      this.nodes.push(children);
+    },
   };
 
   collect(children: ReactNode) {
-    const { add } = this;
+    const { collector } = this;
 
     return (
-      <HeadCollectorContext.Provider value={{ add }}>
+      <HeadCollectorContext.Provider value={collector}>
         {children}
       </HeadCollectorContext.Provider>
     );
   }
 
-  retrieve(): ReactNode {
-    const { nodes } = this;
-    return <>{nodes}</>;
+  retrieve(): ReactNode[] {
+    return this.nodes;
   }
 }
