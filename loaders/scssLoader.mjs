@@ -58,9 +58,11 @@ async function loadSCSSModule(file) {
     });
   });
 
-  sassResult.stats.includedFiles
-    .filter((f) => typeof f === 'string' && f !== file)
-    .forEach((f) => global.addFileParent(f, file));
+  if (global.addFileParent) {
+    sassResult.stats.includedFiles
+      .filter((f) => typeof f === 'string' && f !== file)
+      .forEach((f) => global.addFileParent(f, file));
+  }
 
   const { css } = await postcss([
     postcssModules({
