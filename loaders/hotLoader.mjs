@@ -7,10 +7,8 @@ const sourceDirPath = path.join(process.cwd(), paths.SRC_DIR);
 const dependencyMap = new Map();
 const pathsToClear = new Set();
 
-global.clearFileCache = (absolutePath) => {
-  pathsToClear.add(absolutePath);
-  getParents(absolutePath).forEach((file) => pathsToClear.add(file));
-};
+global.addFileParent = addFileParent;
+global.clearFileCache = clearFileCache;
 
 export async function resolve(specifier, context, nextResolve) {
   const result = await nextResolve(specifier, context);
@@ -21,7 +19,7 @@ export async function resolve(specifier, context, nextResolve) {
 
     if (context.parentURL) {
       const parentPath = url.fileURLToPath(context.parentURL);
-      fillDependencyMap(filePath, parentPath);
+      addFileParent(filePath, parentPath);
     }
 
     if (pathsToClear.has(filePath)) {
@@ -36,13 +34,8 @@ export async function resolve(specifier, context, nextResolve) {
   return result;
 }
 
-function getParents(file) {
-  const parents = dependencyMap.get(file);
-  return parents ? [parents, parents.map(getParents)].flat(Infinity) : [];
-}
-
-function fillDependencyMap(filePath, parentPath) {
-  if (parentPath.startsWith(sourceDirPath)) {
+function addFileParent(filePath, parentPath) {
+  if (filePath.startsWith(sourceDirPath)) {
     if (!dependencyMap.has(filePath)) {
       dependencyMap.set(filePath, []);
     }
@@ -52,4 +45,14 @@ function fillDependencyMap(filePath, parentPath) {
       fileParents.push(parentPath);
     }
   }
+}
+
+function clearFileCache(absolutePath) {
+  pathsToClear.add(absolutePath);
+  getParents(absolutePath).forEach((file) => pathsToClear.add(file));
+}
+
+function getParents(file) {
+  const parents = dependencyMap.get(file);
+  return parents ? [parents, parents.map(getParents)].flat(Infinity) : [];
 }

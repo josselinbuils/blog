@@ -6,11 +6,10 @@ import { highlightCode } from './highlightCode';
 
 export const Highlight: FC<Props> = withCSS(
   ({ code, language }) => (
-    <pre className={styles.highlight}>
-      <code
-        dangerouslySetInnerHTML={{ __html: highlightCode(code, language) }}
-      />
-    </pre>
+    <code
+      className={styles.highlight}
+      dangerouslySetInnerHTML={{ __html: highlightCode(code, language) }}
+    />
   ),
   cssMetadata
 );

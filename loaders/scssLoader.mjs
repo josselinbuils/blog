@@ -53,10 +53,14 @@ async function loadSCSSModule(file) {
       if (error) {
         reject(error);
       } else {
-        resolve(result.css.toString().replace(/^@charset.+\n/, ''));
+        resolve(result);
       }
     });
   });
+
+  sassResult.stats.includedFiles
+    .filter((f) => typeof f === 'string' && f !== file)
+    .forEach((f) => global.addFileParent(f, file));
 
   const { css } = await postcss([
     postcssModules({
@@ -68,7 +72,9 @@ async function loadSCSSModule(file) {
         styles = json;
       },
     }),
-  ]).process(sassResult, { from: undefined });
+  ]).process(sassResult.css.toString(), {
+    from: undefined,
+  });
 
   return { id, css: `${css}\n`, styles };
 }
