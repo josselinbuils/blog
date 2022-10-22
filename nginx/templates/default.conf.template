@@ -1,6 +1,8 @@
 server {
   listen 3000;
 
+  add_header Cross-Origin-Embedder-Policy require-corp
+
   location ~* ^${HTTP_PREFIX}(/assets/.*)$ {
     add_header Cache-Control "public, max-age=31536000, immutable";
     root /blog/dist;
