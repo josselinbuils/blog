@@ -6,7 +6,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["dom", "esnext"],
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
@@ -14,12 +14,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2020"
+    "target": "es2022"
   },
   "exclude": ["node_modules"],
-  "files": [
-    "typings.d.ts"
-  ],
+  "files": ["typings.d.ts"],
   "include": ["**/*.ts", "**/*.tsx"],
   "ts-node": {
     "files": true

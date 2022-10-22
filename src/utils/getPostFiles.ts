@@ -1,6 +1,6 @@
-import baseGlob from 'glob';
 import path from 'path';
 import { promisify } from 'util';
+import baseGlob from 'glob';
 
 const glob = promisify(baseGlob);
 

@@ -1,13 +1,12 @@
-import fs from 'fs-extra';
 import path from 'path';
-import { DIST_DIR } from './constants';
+import fs from 'fs-extra';
+import paths from '../paths.json' assert { type: 'json' };
 import { generateHashedAssets } from './utils/generateHashedAssets';
 import { getPages } from './utils/getPages';
-import './utils/loaders/registerSCSSModuleLoaders';
 import { renderPage } from './utils/renderPage';
 
 (async () => {
-  const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
+  const distAbsolutePath = path.join(process.cwd(), paths.DIST_DIR);
 
   await fs.emptyDirSync(distAbsolutePath);
 

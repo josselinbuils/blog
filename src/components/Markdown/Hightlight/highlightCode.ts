@@ -1,14 +1,14 @@
-import Prism, { Environment, hooks, Token } from 'prismjs';
-import 'prismjs/components/prism-css.min';
-import 'prismjs/components/prism-javascript.min';
-import 'prismjs/components/prism-json.min';
-import 'prismjs/components/prism-markdown.min';
-import 'prismjs/components/prism-markup.min';
-import 'prismjs/components/prism-markup-templating.min';
-import 'prismjs/components/prism-scss.min';
-import 'prismjs/components/prism-typescript.min';
-import 'prismjs/components/prism-yaml.min';
-
+import type { Environment, hooks, Token } from 'prismjs';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-css.min.js';
+import 'prismjs/components/prism-javascript.min.js';
+import 'prismjs/components/prism-json.min.js';
+import 'prismjs/components/prism-markdown.min.js';
+import 'prismjs/components/prism-markup.min.js';
+import 'prismjs/components/prism-markup-templating.min.js';
+import 'prismjs/components/prism-scss.min.js';
+import 'prismjs/components/prism-typescript.min.js';
+import 'prismjs/components/prism-yaml.min.js';
 import styles from './Hightlight.module.scss';
 
 export function highlightCode(code: string, language: string): string {

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { BlogPost } from '../../BlogPost';
+import type { FC } from 'react';
+import React from 'react';
+import type { BlogPost } from '../../BlogPost';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
-
 import styles, { cssMetadata } from './Posts.module.scss';
 
 export const Posts: FC<Props> = withCSS(

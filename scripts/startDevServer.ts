@@ -1,6 +1,5 @@
 import express from 'express';
-import { DIST_DIR } from './constants';
-import './utils/loaders/registerSCSSModuleLoaders';
+import paths from '../paths.json' assert { type: 'json' };
 import { HotReloadServer } from './utils/hotReload/HotReloadServer';
 
 const HTTP_PORT = 3000;
@@ -22,7 +21,7 @@ express()
   })
   .use(
     HTTP_PREFIX,
-    express.static(DIST_DIR, {
+    express.static(paths.DIST_DIR, {
       cacheControl: false,
       extensions: ['html'],
     })

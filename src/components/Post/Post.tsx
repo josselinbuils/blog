@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
-import { repository } from '../../../package.json';
-import { BlogPost } from '../../BlogPost';
+import type { FC } from 'react';
+import React from 'react';
+import packageFile from '../../../package.json' assert { type: 'json' };
+import type { BlogPost } from '../../BlogPost';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
-
 import styles, { cssMetadata } from './Post.module.scss';
 
 export const Post: FC<Props> = withCSS(
@@ -18,7 +18,7 @@ ${post.content}
 ${post.history
   .map(
     ({ commitDate, commitHash, commitSubject }) =>
-      `- [${commitSubject}](${repository}/commit/${commitHash}) committed on ${commitDate}.`
+      `- [${commitSubject}](${packageFile.repository}/commit/${commitHash}) committed on ${commitDate}.`
   )
   .join('\n')}
 `}</Markdown>

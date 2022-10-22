@@ -1,7 +1,8 @@
-import baseGlob from 'glob';
 import path from 'path';
-import React, { ReactNode } from 'react';
 import { promisify } from 'util';
+import baseGlob from 'glob';
+import type { ReactNode } from 'react';
+import React from 'react';
 
 const glob = promisify(baseGlob);
 const pagesDir = path.join(process.cwd(), 'src/pages');

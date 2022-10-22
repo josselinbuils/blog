@@ -1,0 +1,6 @@
+{
+  "DIST_ASSETS_DIR": "dist/assets",
+  "DIST_DIR": "dist",
+  "PUBLIC_DIR": "public",
+  "SRC_DIR": "src"
+}

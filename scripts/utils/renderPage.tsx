@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
 import { minify } from 'html-minifier';
+import type { ReactNode } from 'react';
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { HashedAsset } from './generateHashedAsset';
+import type { HashedAsset } from './generateHashedAsset';
 import { HotReloadClient } from './hotReload/HotReloadClient';
 
 export function renderPage(content: ReactNode, assets: HashedAsset[]): string {

@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { createContext } from 'react';
 
 export const CSSCollectorContext = createContext({
   add: (() => {}) as (id: string, css: string) => void,

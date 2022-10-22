@@ -1,11 +1,15 @@
-import React, { FC } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { CSSCollector } from '../CSSCollector/CSSCollector';
 import { HeadCollector } from '../Head/HeadCollector';
-
 import styles, { cssMetadata } from './Page.module.scss';
 
-export const Page: FC = ({ children }) => {
+interface Props {
+  children: ReactNode;
+}
+
+export const Page: FC<Props> = ({ children }) => {
   const headCollector = new HeadCollector();
   const cssCollector = new CSSCollector();
   const { css, id } = cssMetadata;

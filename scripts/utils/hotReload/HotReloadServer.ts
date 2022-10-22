@@ -1,23 +1,23 @@
-import { ExecQueue } from '@josselinbuils/utils/ExecQueue';
+import path from 'path';
+import { ExecQueue } from '@josselinbuils/utils/ExecQueue.js';
 import chalk from 'chalk';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
-import path from 'path';
-import { Server, ServerOptions } from 'ws';
-import { DIST_DIR, PUBLIC_DIR, SRC_DIR } from '../../constants';
-import { generateHashedAsset, HashedAsset } from '../generateHashedAsset';
+import { type ServerOptions, WebSocketServer } from 'ws';
+import paths from '../../../paths.json' assert { type: 'json' };
+import type { HashedAsset } from '../generateHashedAsset';
+import { generateHashedAsset } from '../generateHashedAsset';
 import { generateHashedAssets } from '../generateHashedAssets';
-import { getPages, Page } from '../getPages';
+import type { Page } from '../getPages';
+import { getPages } from '../getPages';
 import { renderPage } from '../renderPage';
-import { HotReloadAction } from './HotReloadAction';
-import { fillDependencyMap } from './utils/fillDependencyMap';
+import type { HotReloadAction } from './HotReloadAction';
 
-const distAbsolutePath = path.join(process.cwd(), DIST_DIR);
+const distAbsolutePath = path.join(process.cwd(), paths.DIST_DIR);
 
-export class HotReloadServer extends Server {
+export class HotReloadServer extends WebSocketServer {
   private assets = [] as HashedAsset[];
   private readonly clientPathnames = [] as string[];
-  private readonly dependencyMap = {} as { [filename: string]: Set<string> };
   private readonly execQueue = new ExecQueue();
   private pages = [] as Page[];
 
@@ -64,11 +64,11 @@ export class HotReloadServer extends Server {
 
       ['add', 'change', 'unlink'].forEach((eventName) => {
         chokidar
-          .watch(PUBLIC_DIR, chokidarOptions)
+          .watch(paths.PUBLIC_DIR, chokidarOptions)
           .on(eventName, this.reloadAsset);
 
         chokidar
-          .watch(SRC_DIR, chokidarOptions)
+          .watch(paths.SRC_DIR, chokidarOptions)
           .on(eventName, this.reloadSourceFile);
       });
 
@@ -95,11 +95,7 @@ export class HotReloadServer extends Server {
     }
   }
 
-  private async buildPage({
-    absolutePath,
-    factory,
-    slug,
-  }: Page): Promise<void> {
+  private async buildPage({ factory, slug }: Page): Promise<void> {
     const startTime = Date.now();
 
     console.log(`Build page: /${slug}`);
@@ -109,11 +105,6 @@ export class HotReloadServer extends Server {
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
         renderPage(await factory(), this.assets),
         'utf8'
-      );
-
-      fillDependencyMap(
-        this.dependencyMap,
-        require.cache[absolutePath] as NodeJS.Module
       );
 
       console.log(
@@ -145,7 +136,7 @@ export class HotReloadServer extends Server {
       await fs.remove(path.join(distAbsolutePath, toRelativeURL));
       this.assets.splice(this.assets.indexOf(asset), 1);
 
-      console.log(`Removed ${path.join(DIST_DIR, toRelativeURL)}`);
+      console.log(`Removed ${path.join(paths.DIST_DIR, toRelativeURL)}`);
     }
 
     if (await fs.pathExists(relativeFilePath)) {
@@ -154,7 +145,9 @@ export class HotReloadServer extends Server {
       );
       this.assets.push(newAsset);
 
-      console.log(`Created ${path.join(DIST_DIR, newAsset.toRelativeURL)}`);
+      console.log(
+        `Created ${path.join(paths.DIST_DIR, newAsset.toRelativeURL)}`
+      );
     }
 
     this.getUniquePathnames().forEach((pathname) => {
@@ -169,14 +162,8 @@ export class HotReloadServer extends Server {
     const absoluteFilePath = path.join(process.cwd(), relativeFilePath);
 
     if (await fs.pathExists(relativeFilePath)) {
-      console.log(`Reload ${relativeFilePath}`);
-    } else {
-      console.log(`Unload ${relativeFilePath}`);
+      (global as any).clearFileCache(absoluteFilePath);
     }
-
-    this.dependencyMap[absoluteFilePath]?.forEach((filename) => {
-      delete require.cache[filename];
-    });
 
     for (const pathname of this.getUniquePathnames()) {
       const page = this.pages.find(({ slug }) => slug === pathname.slice(1));

@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import { BlogPost } from '../BlogPost';
+import type { FC } from 'react';
+import React from 'react';
+import type { BlogPost } from '../BlogPost';
 import { Head } from '../components/Head/Head';
 import { Page } from '../components/Page/Page';
 import { Post } from '../components/Post/Post';

@@ -1,13 +1,11 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import childProcess from 'child_process';
 import path from 'path';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime.js';
 
 dayjs.extend(relativeTime);
 
-export function getPostHistory(
-  filename: string
-): {
+export function getPostHistory(filename: string): {
   commitDate: string;
   commitHash: string;
   commitSubject: string;

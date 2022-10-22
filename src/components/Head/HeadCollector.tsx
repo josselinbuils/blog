@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { createContext } from 'react';
 
 export const HeadCollectorContext = createContext({
   add: (() => {}) as (children: ReactNode) => void,

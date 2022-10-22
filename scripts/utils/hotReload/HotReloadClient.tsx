@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import { HotReloadAction } from './HotReloadAction';
+import type { FC } from 'react';
+import React from 'react';
+import type { HotReloadAction } from './HotReloadAction';
 
 export const HotReloadClient: FC = () => {
   function watchDevServer(): void {

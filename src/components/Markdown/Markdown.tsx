@@ -1,12 +1,12 @@
 import cn from 'classnames';
-import React, { FC, ImgHTMLAttributes, ReactNode } from 'react';
+import type { FC, ImgHTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getURL } from '../../utils/getURL';
 import { withCSS } from '../CSSCollector/withCSS';
 import { Head } from '../Head/Head';
 import { Highlight } from './Hightlight/Hightlight';
-
 import styles, { cssMetadata } from './Markdown.module.scss';
 
 const components = {
@@ -63,22 +63,23 @@ const components = {
   },
 };
 
-export const Markdown: FC<Props> = withCSS(
+interface Props {
+  children: string;
+  className?: string;
+  tag?: keyof JSX.IntrinsicElements;
+}
+
+export const Markdown: FC<Props> = withCSS<Props>(
   ({ children, className, tag: MarkdownTag = 'div', ...forwardedProps }) => (
     <MarkdownTag className={cn(styles.markdown, className)}>
       <ReactMarkdown
-        plugins={[remarkGfm]}
         components={components as any}
+        remarkPlugins={[remarkGfm]}
         {...forwardedProps}
       >
-        {children as string}
+        {children}
       </ReactMarkdown>
     </MarkdownTag>
   ),
   cssMetadata
 );
-
-interface Props {
-  className?: string;
-  tag?: keyof JSX.IntrinsicElements;
-}
