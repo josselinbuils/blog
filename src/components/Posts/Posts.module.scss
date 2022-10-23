@@ -17,6 +17,6 @@
 
 @include desktop {
   .posts {
-    padding: rem(40px) calc((100% - $desktopBreakpoint) / 2 + 205px);
+    padding: rem(40px) calc((100% - $desktopBreakpoint) / 2 + 25px);
   }
 }
