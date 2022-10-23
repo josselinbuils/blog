@@ -1,15 +1,17 @@
-import type { FC, ReactNode } from 'react';
-import React from 'react';
+import cn from 'classnames';
+import React, { cloneElement, type FC, type ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { CSSCollector } from '../CSSCollector/CSSCollector';
 import { HeadCollector } from '../Head/HeadCollector';
 import styles, { cssMetadata } from './Page.module.scss';
 
 interface Props {
-  children: ReactNode;
+  children: ReactElement;
+  description: string;
+  title: string;
 }
 
-export const Page: FC<Props> = ({ children }) => {
+export const Page: FC<Props> = ({ children: child, description, title }) => {
   const headCollector = new HeadCollector();
   const cssCollector = new CSSCollector();
   const { css, id } = cssMetadata;
@@ -24,7 +26,9 @@ export const Page: FC<Props> = ({ children }) => {
             role="switch"
             type="checkbox"
           />
-          <main className={styles.main}>{children}</main>
+          {cloneElement(child, {
+            className: cn(child.props.className, styles.main),
+          })}
         </>
       )
     )
@@ -35,8 +39,10 @@ export const Page: FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <head>
+        <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={description} />
         {head}
         {style}
       </head>

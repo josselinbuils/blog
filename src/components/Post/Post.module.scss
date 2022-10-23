@@ -2,9 +2,7 @@
 
 .post {
   box-sizing: border-box;
-  width: min(#{rem(830px)}, 100%);
-  max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
   padding: rem(10px);
 
   & > p:first-child > a {
@@ -34,6 +32,6 @@
 
 @include desktop {
   .post {
-    padding: rem(40px);
+    padding: rem(40px) calc((100% - $desktopBreakpoint) / 2 + 25px);
   }
 }

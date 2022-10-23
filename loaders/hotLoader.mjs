@@ -6,6 +6,7 @@ import paths from '../paths.json' assert { type: 'json' };
 const sourceDirPath = path.join(process.cwd(), paths.SRC_DIR);
 const dependencyMap = new Map();
 const pathsToClear = new Set();
+const overrides = new Map();
 
 global.addFileParent = addFileParent;
 global.clearFileCache = clearFileCache;
@@ -23,11 +24,17 @@ export async function resolve(specifier, context, nextResolve) {
     }
 
     if (pathsToClear.has(filePath)) {
+      const url =
+        resultUrl.href + '?id=' + Math.random().toString(36).substring(3);
+
       console.log(`Reload ${path.relative(process.cwd(), filePath)}`);
       pathsToClear.delete(filePath);
-      return {
-        url: resultUrl.href + '?id=' + Math.random().toString(36).substring(3),
-      };
+      overrides.set(result.url, url);
+
+      return { url };
+    }
+    if (overrides.has(result.url)) {
+      return { url: overrides.get(result.url) };
     }
   }
 

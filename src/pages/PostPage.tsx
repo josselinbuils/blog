@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import React from 'react';
 import type { BlogPost } from '../BlogPost';
-import { Head } from '../components/Head/Head';
 import { Page } from '../components/Page/Page';
 import { Post } from '../components/Post/Post';
 import { getBlogPosts } from '../utils/getBlogPosts';
@@ -13,11 +12,7 @@ interface Props {
 }
 
 const PostPage: FC<Props> = ({ post }) => (
-  <Page>
-    <Head>
-      <title>{post.title}</title>
-      <meta name="description" content={post.description} />
-    </Head>
+  <Page description={post.description} title={post.title}>
     <Post post={post} />
   </Page>
 );

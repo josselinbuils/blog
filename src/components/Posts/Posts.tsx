@@ -5,9 +5,13 @@ import { withCSS } from '../CSSCollector/withCSS';
 import { Markdown } from '../Markdown/Markdown';
 import styles, { cssMetadata } from './Posts.module.scss';
 
+interface Props {
+  posts: BlogPost[];
+}
+
 export const Posts: FC<Props> = withCSS(
   ({ posts }) => (
-    <Markdown className={styles.posts}>{`\
+    <Markdown className={styles.posts} tag="main">{`\
 # Blog
 
 Hey, I'm Josselin, a full-stack JavaScript developer 😄
@@ -32,7 +36,3 @@ ${posts
   ),
   cssMetadata
 );
-
-interface Props {
-  posts: BlogPost[];
-}
