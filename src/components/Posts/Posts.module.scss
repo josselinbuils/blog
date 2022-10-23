@@ -1,0 +1,22 @@
+@import '../../utils';
+
+.posts {
+  box-sizing: border-box;
+  margin: 0;
+  padding: rem(10px);
+
+  a + a {
+    margin-left: rem(20px);
+  }
+
+  h3 + p {
+    font-size: rem(18px);
+    margin-top: rem(10px);
+  }
+}
+
+@include desktop {
+  .posts {
+    padding: rem(40px) calc((100% - $desktopBreakpoint) / 2 + 205px);
+  }
+}
