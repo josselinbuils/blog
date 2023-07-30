@@ -74,7 +74,7 @@ export class HotReloadServer extends WebSocketServer {
 
       console.log(
         chalk.green('Build success'),
-        `${Math.round(Date.now() - startTime) / 1000}s`
+        `${Math.round(Date.now() - startTime) / 1000}s`,
       );
     });
   }
@@ -104,12 +104,12 @@ export class HotReloadServer extends WebSocketServer {
       await fs.outputFile(
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
         renderPage(await factory(), this.assets),
-        'utf8'
+        'utf8',
       );
 
       console.log(
         chalk.green('Build success'),
-        `${Math.round(Date.now() - startTime) / 1000}s`
+        `${Math.round(Date.now() - startTime) / 1000}s`,
       );
 
       this.sendToClients({
@@ -128,7 +128,7 @@ export class HotReloadServer extends WebSocketServer {
 
   private async reloadAsset(relativeFilePath: string): Promise<void> {
     const asset = this.assets.find(({ fromRelativeURL }) =>
-      relativeFilePath.endsWith(fromRelativeURL)
+      relativeFilePath.endsWith(fromRelativeURL),
     );
     if (asset !== undefined) {
       const { toRelativeURL } = asset;
@@ -141,12 +141,12 @@ export class HotReloadServer extends WebSocketServer {
 
     if (await fs.pathExists(relativeFilePath)) {
       const newAsset = await generateHashedAsset(
-        path.join(process.cwd(), relativeFilePath)
+        path.join(process.cwd(), relativeFilePath),
       );
       this.assets.push(newAsset);
 
       console.log(
-        `Created ${path.join(paths.DIST_DIR, newAsset.toRelativeURL)}`
+        `Created ${path.join(paths.DIST_DIR, newAsset.toRelativeURL)}`,
       );
     }
 
@@ -177,7 +177,7 @@ export class HotReloadServer extends WebSocketServer {
 
   private sendToClients(data: string | HotReloadAction): void {
     const message = JSON.stringify(
-      typeof data === 'string' ? { type: 'message', payload: data } : data
+      typeof data === 'string' ? { type: 'message', payload: data } : data,
     );
 
     [...this.clients]

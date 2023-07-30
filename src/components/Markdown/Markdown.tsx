@@ -81,5 +81,5 @@ export const Markdown: FC<Props> = withCSS<Props>(
       </ReactMarkdown>
     </MarkdownTag>
   ),
-  cssMetadata
+  cssMetadata,
 );

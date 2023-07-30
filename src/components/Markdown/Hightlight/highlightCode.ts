@@ -22,7 +22,7 @@ export function highlightCode(code: string, language: string): string {
   const highlighted = Prism.highlight(
     code,
     Prism.languages[language],
-    language
+    language,
   );
 
   removeHook('after-tokenize', afterTokenizeHook);

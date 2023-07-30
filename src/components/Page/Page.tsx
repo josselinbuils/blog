@@ -29,9 +29,9 @@ export const Page: FC<Props> = ({ children: child, description, title }) => {
           {cloneElement(child, {
             className: cn(child.props.className, styles.main),
           })}
-        </>
-      )
-    )
+        </>,
+      ),
+    ),
   );
   const style = cssCollector.retrieve();
   const head = headCollector.retrieve();

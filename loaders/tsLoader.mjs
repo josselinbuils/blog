@@ -27,7 +27,7 @@ export async function resolve(specifier, context, nextResolve) {
     if (parentURL) {
       filePath = path.join(
         path.dirname(url.fileURLToPath(parentURL)),
-        filePath
+        filePath,
       );
     }
 
@@ -58,7 +58,7 @@ export async function load(specifier, context, nextLoad) {
 
     if (!tsConfig) {
       tsConfig = JSON.parse(
-        await fs.readFile(path.join(process.cwd(), 'tsconfig.json'), 'utf8')
+        await fs.readFile(path.join(process.cwd(), 'tsconfig.json'), 'utf8'),
       );
     }
 

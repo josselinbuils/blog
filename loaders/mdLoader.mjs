@@ -35,7 +35,7 @@ export async function load(specifier, context, nextLoad) {
         const newSrc = await loadFile(path.join(path.dirname(filePath), src));
         const newImage = image.replace(new RegExp(src), newSrc);
         markdown = markdown.replace(image, newImage);
-      })
+      }),
     );
 
     return {
@@ -43,7 +43,7 @@ export async function load(specifier, context, nextLoad) {
       shortCircuit: true,
       source: `export const content = \`${markdown.replaceAll(
         '`',
-        '\\`'
+        '\\`',
       )}\`;\n`,
     };
   }
@@ -58,13 +58,13 @@ async function loadFile(filePath) {
   const distPath = path.join(
     process.cwd(),
     paths.DIST_ASSETS_DIR,
-    `${basename.slice(0, -extension.length)}.${hash}${extension}`
+    `${basename.slice(0, -extension.length)}.${hash}${extension}`,
   );
 
   await fs.copyFile(filePath, distPath);
 
   return `/${path.relative(
     path.join(process.cwd(), paths.DIST_DIR),
-    distPath
+    distPath,
   )}`;
 }

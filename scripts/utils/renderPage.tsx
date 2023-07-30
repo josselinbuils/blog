@@ -13,8 +13,8 @@ export function renderPage(content: ReactNode, assets: HashedAsset[]): string {
       <>
         {process.env.NODE_ENV === 'development' && <HotReloadClient />}
         {content}
-      </>
-    )}`
+      </>,
+    )}`,
   );
 
   return process.env.NODE_ENV === 'production'

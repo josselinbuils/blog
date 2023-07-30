@@ -1,11 +1,9 @@
 import path from 'path';
-import { promisify } from 'util';
-import baseGlob from 'glob';
+import { glob } from 'glob';
 import paths from '../../paths.json' assert { type: 'json' };
 import type { HashedAsset } from './generateHashedAsset';
 import { generateHashedAsset } from './generateHashedAsset';
 
-const glob = promisify(baseGlob);
 const publicAbsolutePath = path.join(process.cwd(), paths.PUBLIC_DIR);
 
 export async function generateHashedAssets(): Promise<HashedAsset[]> {

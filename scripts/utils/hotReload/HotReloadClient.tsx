@@ -12,7 +12,7 @@ export const HotReloadClient: FC = () => {
         JSON.stringify({
           type: 'setClientPathname',
           payload: { pathname: window.location.pathname },
-        } as HotReloadAction)
+        } as HotReloadAction),
       );
 
     socket.onmessage = ({ data }) => {

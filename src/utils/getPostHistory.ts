@@ -16,20 +16,20 @@ export function getPostHistory(filename: string): {
         `git log --follow --no-merges --name-only --format="%H %at %s" -p ${path.join(
           process.cwd(),
           'src/posts',
-          filename
-        )}`
+          filename,
+        )}`,
       )
       .toString()
       .trim()
       .split('\n')
       .filter(
-        (line) => /^[a-z0-9]{40} \d+/.test(line) && line.includes('#post')
+        (line) => /^[a-z0-9]{40} \d+/.test(line) && line.includes('#post'),
       )
       .map((line) => {
         const result = line.split(' ');
         return {
           commitDate: dayjs(parseInt(result[1], 10) * 1000).format(
-            'MMM D, YYYY'
+            'MMM D, YYYY',
           ),
           commitHash: result[0],
           commitSubject: result.slice(2).join(' ').split(' #post')[0],

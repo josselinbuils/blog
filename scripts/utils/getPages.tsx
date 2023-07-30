@@ -1,10 +1,8 @@
 import path from 'path';
-import { promisify } from 'util';
-import baseGlob from 'glob';
+import { glob } from 'glob';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-const glob = promisify(baseGlob);
 const pagesDir = path.join(process.cwd(), 'src/pages');
 
 export interface Page {

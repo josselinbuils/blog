@@ -12,7 +12,7 @@ export interface HashedAsset {
 }
 
 export async function generateHashedAsset(
-  absolutePath: string
+  absolutePath: string,
 ): Promise<HashedAsset> {
   const extension = path.extname(absolutePath);
   const relativePath = path.relative(publicAbsolutePath, absolutePath);
@@ -20,7 +20,7 @@ export async function generateHashedAsset(
   const hash = generateHash(await fs.readFile(absolutePath));
   const newAbsolutePath = path.join(
     distAbsolutePath,
-    `assets/${relativePath.slice(0, -extension.length)}.${hash}${extension}`
+    `assets/${relativePath.slice(0, -extension.length)}.${hash}${extension}`,
   );
   const toRelativeURL = `/${path.relative(distAbsolutePath, newAbsolutePath)}`;
 

@@ -20,8 +20,8 @@ import { renderPage } from './utils/renderPage';
       fs.outputFile(
         path.join(distAbsolutePath, `${slug || 'index'}.html`),
         renderPage(await factory(), assets),
-        'utf8'
-      )
+        'utf8',
+      ),
     ),
   ]);
 })();

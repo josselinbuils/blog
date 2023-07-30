@@ -29,10 +29,10 @@ ${posts
     ({ history, readingTime, slug, title }) => `\
 ### [${title}](/${slug})
   ${[...history].pop()?.commitDate} - ${readingTime}
-`
+`,
   )
   .join('')}
 `}</Markdown>
   ),
-  cssMetadata
+  cssMetadata,
 );

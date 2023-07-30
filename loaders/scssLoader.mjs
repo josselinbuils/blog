@@ -3,7 +3,7 @@ import process from 'node:process';
 import url, { URL } from 'node:url';
 import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
-import sass from 'sass';
+import * as sass from 'sass';
 import { generateHash } from './utils/generateHash.mjs';
 
 const baseURL = url.pathToFileURL(`${process.cwd()}/`).href;
@@ -28,7 +28,7 @@ export async function load(specifier, context, nextLoad) {
   ) {
     const format = 'module';
     const { css, id, styles } = await loadSCSSModule(
-      url.fileURLToPath(specifier)
+      url.fileURLToPath(specifier),
     );
     const source = `\
 export default ${JSON.stringify(styles)};

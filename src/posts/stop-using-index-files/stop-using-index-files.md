@@ -202,7 +202,7 @@ document.body.innerText = component1;
 
 window.doStuff = () =>
   import('./components').then(
-    ({ component2 }) => (document.body.innerText += component2)
+    ({ component2 }) => (document.body.innerText += component2),
   );
 ```
 
@@ -262,7 +262,7 @@ document.body.innerText = component1;
 
 window.doStuff = () =>
   import('./components/component2').then(
-    ({ component2 }) => (document.body.innerText += component2)
+    ({ component2 }) => (document.body.innerText += component2),
   );
 ```
 

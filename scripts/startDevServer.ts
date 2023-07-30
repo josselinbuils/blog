@@ -24,7 +24,7 @@ express()
     express.static(paths.DIST_DIR, {
       cacheControl: false,
       extensions: ['html'],
-    })
+    }),
   )
   .use(async (req, res, next) => {
     const hasBuiltPage = await hotReloadServer.tryToBuildPage(req.url);

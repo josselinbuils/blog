@@ -18,12 +18,12 @@ ${post.content}
 ${post.history
   .map(
     ({ commitDate, commitHash, commitSubject }) =>
-      `- [${commitSubject}](${packageFile.repository}/commit/${commitHash}) committed on ${commitDate}.`
+      `- [${commitSubject}](${packageFile.repository}/commit/${commitHash}) committed on ${commitDate}.`,
   )
   .join('\n')}
 `}</Markdown>
   ),
-  cssMetadata
+  cssMetadata,
 );
 
 interface Props {

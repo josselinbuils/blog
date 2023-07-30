@@ -11,7 +11,7 @@ export const Highlight: FC<Props> = withCSS(
       dangerouslySetInnerHTML={{ __html: highlightCode(code, language) }}
     />
   ),
-  cssMetadata
+  cssMetadata,
 );
 
 interface Props {

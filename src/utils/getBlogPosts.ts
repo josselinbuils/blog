@@ -23,8 +23,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
           const title = getPostTitle(content);
 
           return { content, description, history, readingTime, slug, title };
-        })
-      )
+        }),
+      ),
     );
   }
   return postsPromise;
